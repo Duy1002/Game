@@ -7,6 +7,7 @@
 #include <array>
 #include "menu_system.h"
 #include "logic.h"
+#include <ctime>
 
 
 
@@ -17,6 +18,9 @@ namespace game {
         SDL_Event e;
         bool playing = 0;
         while (true) {
+            clock_t start = clock();
+            int mouse_x, mouse_y;
+            SDL_GetMouseState(&mouse_x, &mouse_y);
             if (playing) {
                 graphic::reset_screen();
                 graphic::draw_playing_screen();
@@ -31,8 +35,6 @@ namespace game {
                     default: break;
                 }
             } else {
-                int mouse_x, mouse_y;
-                SDL_GetMouseState(&mouse_x, &mouse_y);
                 current_menu->animation(mouse_x, mouse_y);
                 graphic::reset_screen();
                 graphic::draw_menu(*current_menu);
@@ -105,7 +107,7 @@ namespace game {
                     playing = 1;
                 }
             }
-            SDL_Delay(16);
+            SDL_Delay(std::max(33 - (int)(clock() - start), 0));
         }
     }
 }
