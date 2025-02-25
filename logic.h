@@ -23,6 +23,8 @@ namespace logic {
     const char *difficulty_name[] = {"EASY", "NORMAL", "HARD", "IMPOSSIBLE"};
     bool grid[7][16];
     int next_round_x = 323, next_round_y = 92, next_round_z = 707, next_round_t = 142;
+    int home_x = 1000, home_y = 506, home_z = 1080, home_t = 586;
+    bool home_big = 0;
     int difficulty = 1, enemy_speed, lives, money, round, upcoming_enemy, time_between_enemy = 30, timer;
     size_t current_wave_ptr;
     std::vector<waves::enemy_info> current_wave;
@@ -39,8 +41,12 @@ namespace logic {
         return (b.x - std::get<0>(path[e.x])) * (b.x - std::get<0>(path[e.x])) + (b.y - std::get<1>(path[e.x])) * (b.y - std::get<1>(path[e.x])) <= 400;
     }
 
-    bool clicked_next_round_button(int mouse_x, int mouse_y) {
+    bool touched_next_round_button(int mouse_x, int mouse_y) {
         return next_round_x <= mouse_x && mouse_x <= next_round_z && next_round_y <= mouse_y && mouse_y <= next_round_t;
+    }
+
+    bool touched_home_button(int mouse_x, int mouse_y) {
+        return home_x <= mouse_x && mouse_x <= home_z && home_y <= mouse_y && mouse_y <= home_t;
     }
 
     void next_round() {
@@ -65,6 +71,10 @@ namespace logic {
 
     void spawn_bullet1(int x, int y, int damage, int target_x, int target_y) {
         b1.emplace_back(x, y, damage, target_x, target_y);
+    }
+
+    void animation(int mouse_x, int mouse_y) {
+        home_big = touched_home_button(mouse_x, mouse_y);
     }
 
     void init(bool new_grid[7][16]) {
@@ -167,7 +177,8 @@ namespace logic {
             SDL_MouseButtonEvent mouse_event = ev.button;
             if (mouse_event.button == SDL_BUTTON_LEFT) {
                 int mouse_x = mouse_event.x, mouse_y = mouse_event.y;
-                if (!enemy_still_alive() && clicked_next_round_button(mouse_x, mouse_y)) next_round();
+                if (touched_home_button(mouse_x, mouse_y)) return 2;
+                if (!enemy_still_alive() && touched_next_round_button(mouse_x, mouse_y)) next_round();
             }
         }
         if (!lives) return 0;

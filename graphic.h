@@ -169,6 +169,22 @@ namespace graphic {
         }
     }
 
+    void draw_half_filled_diamond(int x, int y, int r) {
+        SDL_SetRenderDrawColor(renderer, 255, 255, 255, 255);
+        for (int i = 0; i > -r; --i) {
+            for (int j = 0; j > -r; --j) {
+                if (-i - j >= r) break;
+                SDL_RenderDrawPoint(renderer, x + i, y + j);
+            }
+        }
+        for (int i = 0; i < r; ++i) {
+            for (int j = 0; j > -r; --j) {
+                if (i - j >= r) break;
+                SDL_RenderDrawPoint(renderer, x + i, y + j);
+            }
+        }
+    }
+
     void draw_A(int x, int y, int size) {
         draw_rectangle(x + size, y, size * 3, size);
         draw_rectangle(x + size, y + size * 3, size * 3, size);
@@ -693,6 +709,28 @@ namespace graphic {
         draw_string(logic::next_round_x + 39, logic::next_round_y + 10, 4, "NEXT ROUND");
     }
 
+    void draw_home_button() {
+        if (logic::home_big) {
+            draw_rectangle(logic::home_x - 21, logic::home_y - 21, 122, 2);
+            draw_rectangle(logic::home_x - 21, logic::home_y + 99, 122, 2);
+            draw_rectangle(logic::home_x - 21, logic::home_y - 19, 2, 118);
+            draw_rectangle(logic::home_x + 99, logic::home_y - 19, 2, 118);
+            draw_rectangle(logic::home_x + 7, logic::home_y + 40, 24, 45);
+            draw_rectangle(logic::home_x + 49, logic::home_y + 40, 24, 45);
+            draw_rectangle(logic::home_x + 31, logic::home_y + 40, 18, 24);
+            draw_half_filled_diamond(logic::home_x + 40, logic::home_y + 40, 45);
+        } else {
+            draw_rectangle(logic::home_x - 1, logic::home_y - 1, 82, 2);
+            draw_rectangle(logic::home_x - 1, logic::home_y + 79, 82, 2);
+            draw_rectangle(logic::home_x - 1, logic::home_y + 1, 2, 78);
+            draw_rectangle(logic::home_x + 79, logic::home_y + 1, 2, 78);
+            draw_rectangle(logic::home_x + 18, logic::home_y + 40, 16, 30);
+            draw_rectangle(logic::home_x + 46, logic::home_y + 40, 16, 30);
+            draw_rectangle(logic::home_x + 34, logic::home_y + 40, 12, 16);
+            draw_half_filled_diamond(logic::home_x + 40, logic::home_y + 40, 30);
+        }
+    }
+
     void draw_playing_screen() {
         draw_enemy();
         draw_bullet();
@@ -700,6 +738,7 @@ namespace graphic {
         draw_grid();
         draw_info();
         if (!logic::enemy_still_alive()) draw_next_round_button();
+        draw_home_button();
     }
 };
 

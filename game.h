@@ -16,12 +16,12 @@ namespace game {
         menu_system::init();
         menu *current_menu = menu_system::intro;
         SDL_Event e;
-        bool playing = 0;
         while (true) {
             clock_t start = clock();
             int mouse_x, mouse_y;
             SDL_GetMouseState(&mouse_x, &mouse_y);
-            if (playing) {
+            if (current_menu == menu_system::playing) {
+                logic::animation(mouse_x, mouse_y);
                 graphic::reset_screen();
                 graphic::draw_playing_screen();
                 graphic::present();
@@ -29,7 +29,9 @@ namespace game {
                 switch (game_state) {
                     case -1: return;
                     case 0:
-                        playing = 0;
+                        current_menu = menu_system::intro;
+                        break;
+                    case 2:
                         current_menu = menu_system::intro;
                         break;
                     default: break;
@@ -68,7 +70,7 @@ namespace game {
                         {1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0, 0, 0, 1, 1, 1}
                     };
                     logic::init(board);
-                    playing = 1;
+                    current_menu = menu_system::playing;
                 } else if (current_menu == menu_system::level2) {
                     bool board[7][16] = {
                         {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
@@ -80,7 +82,7 @@ namespace game {
                         {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0}
                     };
                     logic::init(board);
-                    playing = 1;
+                    current_menu = menu_system::playing;
                 } else if (current_menu == menu_system::level3) {
                     bool board[7][16] = {
                         {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
@@ -92,7 +94,7 @@ namespace game {
                         {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0}
                     };
                     logic::init(board);
-                    playing = 1;
+                    current_menu = menu_system::playing;
                 } else if (current_menu == menu_system::level4) {
                     bool board[7][16] = {
                         {1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
@@ -104,7 +106,7 @@ namespace game {
                         {0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1}
                     };
                     logic::init(board);
-                    playing = 1;
+                    current_menu = menu_system::playing;
                 }
             }
             SDL_Delay(std::max(33 - (int)(clock() - start), 0));

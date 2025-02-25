@@ -23,6 +23,7 @@ namespace menu_system {
     menu *level2 = new menu();
     menu *level3 = new menu();
     menu *level4 = new menu();
+    menu *playing = new menu();
 
     void init() {
         intro->b =
