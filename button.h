@@ -16,7 +16,7 @@ struct button {
     std::vector<std::tuple<int, int, int, const char*>> s;
 
     button(int x, int y, const char *str, std::vector<std::tuple<int, int, int, const char*>> s = {}):
-        x(x), y(y), z(x + strlen(str) * 24 + 36), t(y + 4 * 16), str(str), s(s) {}
+        x(x), y(y), z(x + strlen(str) * 24 + 36), t(y + 64), str(str), s(s) {}
 
     bool touched(int mouse_x, int mouse_y) {
         return x <= mouse_x && mouse_x <= z && y <= mouse_y && mouse_y <= t;

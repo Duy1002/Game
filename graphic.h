@@ -495,6 +495,15 @@ namespace graphic {
         draw_rectangle(x + size * 2, y + size * 2, size, size * 2);
     }
 
+    void draw_question(int x, int y, int size) {
+        draw_rectangle(x, y + size, size, size);
+        draw_rectangle(x + size, y, size * 3, size);
+        draw_rectangle(x + size * 4, y + size, size, size);
+        draw_rectangle(x + size * 3, y + size * 2, size, size);
+        draw_rectangle(x + size * 2, y + size * 3, size, size * 3 / 2);
+        draw_rectangle(x + size * 2, y + size * 5, size, size);
+    }
+
     void draw_char(int x, int y, int size, char c) {
         switch (c) {
             case 'A': draw_A(x, y, size); break;
@@ -537,6 +546,7 @@ namespace graphic {
             case ':': draw_colon(x, y, size); break;
             case 'x': draw_x(x, y, size); break;
             case '$': draw_dollar(x, y, size); break;
+            case '?': draw_question(x, y, size); break;
             default: break;
         }
     }

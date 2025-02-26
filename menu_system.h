@@ -24,6 +24,7 @@ namespace menu_system {
     menu *level3 = new menu();
     menu *level4 = new menu();
     menu *playing = new menu();
+    menu *are_you_sure = new menu();
 
     void init() {
         intro->b =
@@ -123,6 +124,30 @@ namespace menu_system {
         level_selection->s =
         std::vector<std::tuple<int, int, int, const char*>>({
             std::make_tuple(204, 50, 8, "LEVEL SELECTION")
+        });
+
+        are_you_sure->rect =
+        std::vector<std::tuple<int, int, int, int>>({
+            std::make_tuple(157, 172, 806, 6),
+            std::make_tuple(157, 452, 806, 6),
+            std::make_tuple(157, 175, 6, 280),
+            std::make_tuple(957, 175, 6, 280)
+        });
+        are_you_sure->b =
+        std::vector<std::tuple<button, menu*>>({
+            std::make_tuple(
+                button(312, 366, "YES"),
+                intro
+            ),
+            std::make_tuple(
+                button(724, 366, "NO"),
+                playing
+            )
+        });
+        are_you_sure->s =
+        std::vector<std::tuple<int, int, int, const char*>>({
+            std::make_tuple(185, 200, 6, "DO YOU WANT TO RETURN"),
+            std::make_tuple(257, 254, 6, "TO THE MAIN MENU?")
         });
     }
 };
