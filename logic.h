@@ -21,10 +21,54 @@ namespace logic {
     float health_factor[] = {0.5, 1, 1.5, 1.5};
     float speed_factor[] = {1, 1, 1, 1.5};
     const char *difficulty_name[] = {"EASY", "NORMAL", "HARD", "IMPOSSIBLE"};
+    bool grid_level[4][7][16] = {
+        {
+            {1, 1, 1, 1, 1, 0, 0, 1, 1, 1, 1, 0, 0, 0, 0, 0},
+            {0, 0, 0, 0, 1, 0, 0, 1, 0, 0, 1, 0, 0, 0, 0, 0},
+            {0, 0, 0, 0, 1, 0, 0, 1, 0, 0, 1, 0, 0, 0, 0, 0},
+            {1, 1, 1, 1, 1, 0, 0, 1, 0, 0, 1, 1, 1, 1, 0, 0},
+            {1, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 1, 0, 0},
+            {1, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 1, 0, 0},
+            {1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0, 0, 0, 1, 1, 1}
+        },
+        {
+            {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
+            {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
+            {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
+            {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
+            {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
+            {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
+            {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0}
+        },
+        {
+            {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
+            {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
+            {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
+            {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
+            {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
+            {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
+            {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0}
+        },
+        {
+            {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
+            {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
+            {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
+            {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
+            {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
+            {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
+            {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0}
+        }
+    };
+    int current_level;
     bool grid[7][16];
+    int tower_type[7][16], tower_id[7][16];
     int next_round_x = 323, next_round_y = 92, next_round_z = 707, next_round_t = 142;
     int home_x = 1000, home_y = 506, home_z = 1080, home_t = 586;
-    bool home_big = 0;
+    int tower1_x = 1000, tower1_y = 134, tower1_z = 1080, tower1_t = 214;
+    int tower2_x = 1000, tower2_y = 258, tower2_z = 1080, tower2_t = 338;
+    int tower3_x = 1000, tower3_y = 382, tower3_z = 1080, tower3_t = 462;
+    bool home_big, tower1_big, tower2_big, tower3_big;
+    bool holding_tower1, holding_tower2, holding_tower3;
     int difficulty = 1, enemy_speed, lives, money, round, upcoming_enemy, time_between_enemy = 30, timer;
     size_t current_wave_ptr;
     std::vector<waves::enemy_info> current_wave;
@@ -49,6 +93,18 @@ namespace logic {
         return home_x <= mouse_x && mouse_x <= home_z && home_y <= mouse_y && mouse_y <= home_t;
     }
 
+    bool touched_tower1_button(int mouse_x, int mouse_y) {
+        return tower1_x <= mouse_x && mouse_x <= tower1_z && tower1_y <= mouse_y && mouse_y <= tower1_t;
+    }
+
+    bool touched_tower2_button(int mouse_x, int mouse_y) {
+        return tower2_x <= mouse_x && mouse_x <= tower2_z && tower2_y <= mouse_y && mouse_y <= tower2_t;
+    }
+
+    bool touched_tower3_button(int mouse_x, int mouse_y) {
+        return tower3_x <= mouse_x && mouse_x <= tower3_z && tower3_y <= mouse_y && mouse_y <= tower3_t;
+    }
+
     void next_round() {
         current_wave = waves::get_wave(round);
         current_wave_ptr = 0;
@@ -65,8 +121,20 @@ namespace logic {
         e1.emplace_back(x, enemy_speed, health * health_factor[difficulty]);
     }
 
-    void place_tower1(int x, int y) {
-        t1.emplace_back(x * 60 + 30, y * 60 + 120);
+    bool in_grid(int mouse_x, int mouse_y) {
+        return 0 <= mouse_x && mouse_x < 960 && 90 <= mouse_y && mouse_y < 510;
+    }
+
+    void place_tower1(int mouse_x, int mouse_y) {
+        if (in_grid(mouse_x, mouse_y) && money >= 5) {
+            int x = mouse_x / 60, y = (mouse_y - 90) / 60;
+            if (!grid[y][x] && !tower_type[y][x]) {
+                money -= 5;
+                tower_type[y][x] = 1;
+                tower_id[y][x] = t1.size();
+                t1.emplace_back(x * 60 + 30, y * 60 + 120);
+            }
+        }
     }
 
     void spawn_bullet1(int x, int y, int damage, int target_x, int target_y) {
@@ -75,23 +143,30 @@ namespace logic {
 
     void animation(int mouse_x, int mouse_y) {
         home_big = touched_home_button(mouse_x, mouse_y);
+        tower1_big = touched_tower1_button(mouse_x, mouse_y);
+        tower2_big = touched_tower2_button(mouse_x, mouse_y);
+        tower3_big = touched_tower3_button(mouse_x, mouse_y);
     }
 
-    void init(bool new_grid[7][16]) {
+    void init(int level) {
         srand(time(NULL));
+        current_level = level;
         enemy_speed = 2 * speed_factor[difficulty];
         lives = 20;
-        money = 0;
+        money = 10;
         round = 0;
         upcoming_enemy = 0;
+        home_big = tower1_big = tower2_big = tower3_big = 0;
+        holding_tower1 = holding_tower2 = holding_tower3 = 0;
         current_wave.clear();
         path.clear();
         e1.clear();
         t1.clear();
         b1.clear();
-        for (int i = 0; i < 7; ++i)
-            for (int j = 0; j < 16; ++j)
-                grid[i][j] = new_grid[i][j];
+        for (int i = 0; i < 7; ++i) for (int j = 0; j < 16; ++j) {
+            grid[i][j] = grid_level[level][i][j];
+            tower_type[i][j] = 0;
+        }
         int i = 0, j = 0, prev_i = 0, prev_j = 0;
         while (i != 6 || j != 15) {
             int next_i, next_j;
@@ -111,7 +186,6 @@ namespace logic {
             prev_i = i, prev_j = j;
             i = next_i, j = next_j;
         }
-        place_tower1(5, 3);
     }
 
     int do_logic() {
@@ -178,7 +252,21 @@ namespace logic {
             if (mouse_event.button == SDL_BUTTON_LEFT) {
                 int mouse_x = mouse_event.x, mouse_y = mouse_event.y;
                 if (touched_home_button(mouse_x, mouse_y)) return 2;
-                if (!enemy_still_alive() && touched_next_round_button(mouse_x, mouse_y)) next_round();
+                if (!enemy_still_alive() && touched_next_round_button(mouse_x, mouse_y)) {
+                    next_round();
+                } else if (touched_tower1_button(mouse_x, mouse_y)) {
+                    holding_tower1 = 1;
+                    holding_tower2 = holding_tower3 = 0;
+                } else if (touched_tower2_button(mouse_x, mouse_y)) {
+                    holding_tower2 = 1;
+                    holding_tower1 = holding_tower3 = 0;
+                } else if (touched_tower3_button(mouse_x, mouse_y)) {
+                    holding_tower3 = 1;
+                    holding_tower1 = holding_tower2 = 0;
+                } else if (holding_tower1) {
+                    place_tower1(mouse_x, mouse_y);
+                    holding_tower1 = 0;
+                }
             }
         }
         if (!lives) return 0;

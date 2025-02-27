@@ -632,11 +632,10 @@ namespace graphic {
     void draw_tower1(tower1 t) {
         draw_circle(t.x, t.y, 20, 5);
         draw_filled_circle(t.x, t.y, 5);
-        draw_circle(t.x, t.y, t.range, 2);
     }
 
     void draw_enemy() {
-        for (std::list<enemy1>::iterator i = logic::e1.begin(); i != logic::e1.end(); ++i)
+        for (std::list<enemy1>::reverse_iterator i = logic::e1.rbegin(); i != logic::e1.rend(); ++i)
             draw_enemy1(std::get<0>(logic::path[i->x]), std::get<1>(logic::path[i->x]), i->health);
     }
 
@@ -741,7 +740,60 @@ namespace graphic {
         }
     }
 
-    void draw_playing_screen() {
+    void draw_tower1_button() {
+        if (logic::tower1_big) {
+            draw_rectangle(logic::tower1_x - 21, logic::tower1_y - 21, 122, 2);
+            draw_rectangle(logic::tower1_x - 21, logic::tower1_y + 99, 122, 2);
+            draw_rectangle(logic::tower1_x - 21, logic::tower1_y - 19, 2, 118);
+            draw_rectangle(logic::tower1_x + 99, logic::tower1_y - 19, 2, 118);
+            draw_circle(logic::tower1_x + 40, logic::tower1_y + 40, 30, 8);
+            draw_filled_circle(logic::tower1_x + 40, logic::tower1_y + 40, 8);
+        } else {
+            draw_rectangle(logic::tower1_x - 1, logic::tower1_y - 1, 82, 2);
+            draw_rectangle(logic::tower1_x - 1, logic::tower1_y + 79, 82, 2);
+            draw_rectangle(logic::tower1_x - 1, logic::tower1_y + 1, 2, 78);
+            draw_rectangle(logic::tower1_x + 79, logic::tower1_y + 1, 2, 78);
+            draw_circle(logic::tower1_x + 40, logic::tower1_y + 40, 20, 5);
+            draw_filled_circle(logic::tower1_x + 40, logic::tower1_y + 40, 5);
+        }
+    }
+
+    void draw_tower2_button() {
+        if (logic::tower2_big) {
+            draw_rectangle(logic::tower2_x - 21, logic::tower2_y - 21, 122, 2);
+            draw_rectangle(logic::tower2_x - 21, logic::tower2_y + 99, 122, 2);
+            draw_rectangle(logic::tower2_x - 21, logic::tower2_y - 19, 2, 118);
+            draw_rectangle(logic::tower2_x + 99, logic::tower2_y - 19, 2, 118);
+        } else {
+            draw_rectangle(logic::tower2_x - 1, logic::tower2_y - 1, 82, 2);
+            draw_rectangle(logic::tower2_x - 1, logic::tower2_y + 79, 82, 2);
+            draw_rectangle(logic::tower2_x - 1, logic::tower2_y + 1, 2, 78);
+            draw_rectangle(logic::tower2_x + 79, logic::tower2_y + 1, 2, 78);
+        }
+    }
+
+    void draw_tower3_button() {
+        if (logic::tower3_big) {
+            draw_rectangle(logic::tower3_x - 21, logic::tower3_y - 21, 122, 2);
+            draw_rectangle(logic::tower3_x - 21, logic::tower3_y + 99, 122, 2);
+            draw_rectangle(logic::tower3_x - 21, logic::tower3_y - 19, 2, 118);
+            draw_rectangle(logic::tower3_x + 99, logic::tower3_y - 19, 2, 118);
+        } else {
+            draw_rectangle(logic::tower3_x - 1, logic::tower3_y - 1, 82, 2);
+            draw_rectangle(logic::tower3_x - 1, logic::tower3_y + 79, 82, 2);
+            draw_rectangle(logic::tower3_x - 1, logic::tower3_y + 1, 2, 78);
+            draw_rectangle(logic::tower3_x + 79, logic::tower3_y + 1, 2, 78);
+        }
+    }
+
+    void draw_holding_tower1(int mouse_x, int mouse_y) {
+        draw_circle(mouse_x, mouse_y, 20, 5);
+        draw_filled_black_circle(mouse_x, mouse_y, 19);
+        draw_filled_circle(mouse_x, mouse_y, 5);
+        draw_circle(mouse_x, mouse_y, 210, 2);
+    }
+
+    void draw_playing_screen(int mouse_x, int mouse_y) {
         draw_enemy();
         draw_bullet();
         draw_tower();
@@ -749,6 +801,10 @@ namespace graphic {
         draw_info();
         if (!logic::enemy_still_alive()) draw_next_round_button();
         draw_home_button();
+        draw_tower1_button();
+        draw_tower2_button();
+        draw_tower3_button();
+        if (logic::holding_tower1) draw_holding_tower1(mouse_x, mouse_y);
     }
 };
 
