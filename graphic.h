@@ -753,6 +753,12 @@ namespace graphic {
             case 1:
                 draw_filled_circle(b.x, b.y, 5);
                 break;
+            case 2:
+                draw_filled_diamond(b.x, b.y, 5);
+                break;
+            case 3:
+                draw_filled_circle(b.x, b.y, 5);
+                break;
             default: break;
         }
     }
@@ -760,9 +766,17 @@ namespace graphic {
     void draw_tower(tower t) {
         switch (t.type) {
             case 1:
-            draw_circle(t.x, t.y, 20, 5);
-            draw_filled_circle(t.x, t.y, 5);
-            break;
+                draw_circle(t.x, t.y, 20, 5);
+                draw_filled_circle(t.x, t.y, 5);
+                break;
+            case 2:
+                draw_circle(t.x, t.y, 20, 5);
+                draw_filled_diamond(t.x, t.y, 5);
+                break;
+            case 3:
+                draw_circle(t.x, t.y, 20, 5);
+                draw_filled_circle(t.x, t.y, 10);
+                break;
             default: break;
         }
     }
@@ -900,11 +914,17 @@ namespace graphic {
             draw_rectangle(logic::tower2_x - 21, logic::tower2_y + 99, 122, 2);
             draw_rectangle(logic::tower2_x - 21, logic::tower2_y - 19, 2, 118);
             draw_rectangle(logic::tower2_x + 99, logic::tower2_y - 19, 2, 118);
+            draw_circle(logic::tower2_x + 40, logic::tower2_y + 40, 30, 8);
+            draw_filled_diamond(logic::tower2_x + 40, logic::tower2_y + 40, 8);
+            if (!logic::is_holding_tower()) {
+            }
         } else {
             draw_rectangle(logic::tower2_x - 1, logic::tower2_y - 1, 82, 2);
             draw_rectangle(logic::tower2_x - 1, logic::tower2_y + 79, 82, 2);
             draw_rectangle(logic::tower2_x - 1, logic::tower2_y + 1, 2, 78);
             draw_rectangle(logic::tower2_x + 79, logic::tower2_y + 1, 2, 78);
+            draw_circle(logic::tower2_x + 40, logic::tower2_y + 40, 20, 5);
+            draw_filled_diamond(logic::tower2_x + 40, logic::tower2_y + 40, 5);
         }
     }
 
@@ -914,11 +934,17 @@ namespace graphic {
             draw_rectangle(logic::tower3_x - 21, logic::tower3_y + 99, 122, 2);
             draw_rectangle(logic::tower3_x - 21, logic::tower3_y - 19, 2, 118);
             draw_rectangle(logic::tower3_x + 99, logic::tower3_y - 19, 2, 118);
+            draw_circle(logic::tower3_x + 40, logic::tower3_y + 40, 30, 8);
+            draw_filled_circle(logic::tower3_x + 40, logic::tower3_y + 40, 16);
+            if (!logic::is_holding_tower()) {
+            }
         } else {
             draw_rectangle(logic::tower3_x - 1, logic::tower3_y - 1, 82, 2);
             draw_rectangle(logic::tower3_x - 1, logic::tower3_y + 79, 82, 2);
             draw_rectangle(logic::tower3_x - 1, logic::tower3_y + 1, 2, 78);
             draw_rectangle(logic::tower3_x + 79, logic::tower3_y + 1, 2, 78);
+            draw_circle(logic::tower3_x + 40, logic::tower3_y + 40, 20, 5);
+            draw_filled_circle(logic::tower3_x + 40, logic::tower3_y + 40, 10);
         }
     }
 
@@ -926,7 +952,23 @@ namespace graphic {
         draw_circle(mouse_x, mouse_y, 20, 5);
         draw_filled_black_circle(mouse_x, mouse_y, 19);
         draw_filled_circle(mouse_x, mouse_y, 5);
-        draw_circle(mouse_x, mouse_y, 210, 2);
+        draw_circle(mouse_x, mouse_y, 150, 2);
+        draw_char(440, 522, 16, 'x');
+    }
+
+    void draw_holding_tower2(int mouse_x, int mouse_y) {
+        draw_circle(mouse_x, mouse_y, 20, 5);
+        draw_filled_black_circle(mouse_x, mouse_y, 19);
+        draw_filled_diamond(mouse_x, mouse_y, 5);
+        draw_circle(mouse_x, mouse_y, 150, 2);
+        draw_char(440, 522, 16, 'x');
+    }
+
+    void draw_holding_tower3(int mouse_x, int mouse_y) {
+        draw_circle(mouse_x, mouse_y, 20, 5);
+        draw_filled_black_circle(mouse_x, mouse_y, 19);
+        draw_filled_circle(mouse_x, mouse_y, 10);
+        draw_circle(mouse_x, mouse_y, 90, 2);
         draw_char(440, 522, 16, 'x');
     }
 
@@ -942,6 +984,8 @@ namespace graphic {
         draw_tower2_button();
         draw_tower3_button();
         if (logic::holding_tower1) draw_holding_tower1(mouse_x, mouse_y);
+        else if (logic::holding_tower2) draw_holding_tower2(mouse_x, mouse_y);
+        else if (logic::holding_tower3) draw_holding_tower3(mouse_x, mouse_y);
     }
 };
 
