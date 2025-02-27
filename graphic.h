@@ -202,6 +202,34 @@ namespace graphic {
         }
     }
 
+    void draw_filled_diamond(int x, int y, int r) {
+        SDL_SetRenderDrawColor(renderer, 255, 255, 255, 255);
+        for (int i = 0; i > -r; --i) {
+            for (int j = 0; j > -r; --j) {
+                if (-i - j >= r) break;
+                SDL_RenderDrawPoint(renderer, x + i, y + j);
+            }
+        }
+        for (int i = 0; i < r; ++i) {
+            for (int j = 0; j > -r; --j) {
+                if (i - j >= r) break;
+                SDL_RenderDrawPoint(renderer, x + i, y + j);
+            }
+        }
+        for (int i = 0; i > -r; --i) {
+            for (int j = 0; j < r; ++j) {
+                if (-i + j >= r) break;
+                SDL_RenderDrawPoint(renderer, x + i, y + j);
+            }
+        }
+        for (int i = 0; i < r; ++i) {
+            for (int j = 0; j < r; ++j) {
+                if (i + j >= r) break;
+                SDL_RenderDrawPoint(renderer, x + i, y + j);
+            }
+        }
+    }
+
     void draw_filled_black_diamond(int x, int y, int r) {
         SDL_SetRenderDrawColor(renderer, 0, 0, 0, 255);
         for (int i = 0; i > -r; --i) {
@@ -677,16 +705,45 @@ namespace graphic {
 
     void draw_enemy(enemy e) {
         switch (e.type) {
-            case 1:
-                draw_circle(std::get<0>(logic::path[e.x]), std::get<1>(logic::path[e.x]), 20, 3);
-                draw_filled_black_circle(std::get<0>(logic::path[e.x]), std::get<1>(logic::path[e.x]), 19);
+            case 1: {
+                int x = std::get<0>(logic::path[e.x]), y = std::get<1>(logic::path[e.x]);
+                draw_circle(x, y, 20, 3);
+                draw_filled_black_circle(x, y, 19);
                 if (e.health < 10) {
-                    draw_char(std::get<0>(logic::path[e.x]) - 5, std::get<1>(logic::path[e.x]) - 6, 2, '0' + e.health);
+                    draw_char(x - 5, y - 6, 2, '0' + e.health);
                 } else {
-                    draw_char(std::get<0>(logic::path[e.x]) - 11, std::get<1>(logic::path[e.x]) - 6, 2, '0' + e.health / 10);
-                    draw_char(std::get<0>(logic::path[e.x]) + 1, std::get<1>(logic::path[e.x]) - 6, 2, '0' + e.health % 10);
+                    draw_char(x - 11, y - 6, 2, '0' + e.health / 10);
+                    draw_char(x + 1, y - 6, 2, '0' + e.health % 10);
                 }
                 break;
+            }
+            case 2: {
+                int x = std::get<0>(logic::path[e.x]), y = std::get<1>(logic::path[e.x]);
+                draw_diamond(x, y, 20, 3);
+                draw_filled_black_diamond(x, y, 19);
+                if (e.health < 10) {
+                    draw_char(x - 5, y - 6, 2, '0' + e.health);
+                } else {
+                    draw_char(x - 11, y - 6, 2, '0' + e.health / 10);
+                    draw_char(x + 1, y - 6, 2, '0' + e.health % 10);
+                }
+                break;
+            }
+            case 3: {
+                int x = std::get<0>(logic::path[e.x]), y = std::get<1>(logic::path[e.x]);
+                draw_rectangle(x - 23, y - 23, 46, 3);
+                draw_rectangle(x - 23, y + 20, 46, 3);
+                draw_rectangle(x - 23, y - 20, 3, 40);
+                draw_rectangle(x + 20, y - 20, 3, 40);
+                draw_black_rectangle(x - 20, y - 20, 40, 40);
+                if (e.health < 10) {
+                    draw_char(x - 5, y - 6, 2, '0' + e.health);
+                } else {
+                    draw_char(x - 11, y - 6, 2, '0' + e.health / 10);
+                    draw_char(x + 1, y - 6, 2, '0' + e.health % 10);
+                }
+                break;
+            }
             default: break;
         }
     }

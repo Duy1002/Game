@@ -66,7 +66,7 @@
 	"graphic.h"
 	"game.h"
 
-1740631182 c:\users\dell\desktop\game\graphic.h
+1740632739 c:\users\dell\desktop\game\graphic.h
 	<SDL.h>
 	"button.h"
 	"menu.h"
@@ -89,7 +89,7 @@
 	<tuple>
 	"button.h"
 
-1740631368 c:\users\dell\desktop\game\logic.h
+1740632046 c:\users\dell\desktop\game\logic.h
 	<SDL.h>
 	"enemy.h"
 	"bullet.h"
@@ -102,7 +102,7 @@
 	<ctime>
 	<cstdlib>
 
-1740631290 c:\users\dell\desktop\game\enemy.h
+1740631980 c:\users\dell\desktop\game\enemy.h
 
 1740629407 c:\users\dell\desktop\game\bullet.h
 	<cmath>

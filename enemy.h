@@ -6,7 +6,7 @@
 struct enemy {
     int x, speed, health, type, init_health, health_health;
 
-    enemy(int x, int speed, int health, int type): x(x), speed(speed), health(std::min(health, 99)), type(type) {
+    enemy(int x, int _speed, int _health, int type): x(x), speed(_speed), health(std::min(_health, 99)), type(type) {
         init_health = health;
         switch (type) {
             case 1:

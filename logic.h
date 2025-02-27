@@ -122,7 +122,10 @@ namespace logic {
     }
 
     void spawn_enemy(int health) {
-        e.emplace_back(0, enemy_speed, health * health_factor[difficulty], 1);
+        int dice = rand() % 6;
+        if (dice < 3) e.emplace_back(0, enemy_speed, health * health_factor[difficulty], 1);
+        else if (dice < 5) e.emplace_back(0, enemy_speed, health * health_factor[difficulty], 2);
+        else e.emplace_back(0, enemy_speed, health * health_factor[difficulty], 3);
     }
 
     bool in_grid(int mouse_x, int mouse_y) {
