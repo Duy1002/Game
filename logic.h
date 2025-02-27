@@ -73,15 +73,19 @@ namespace logic {
     size_t current_wave_ptr;
     std::vector<waves::enemy_info> current_wave;
     std::vector<std::tuple<int, int>> path;
-    std::list<enemy1> e1;
-    std::list<bullet1> b1;
-    std::list<tower1> t1;
+    std::list<enemy> e;
+    std::list<bullet> b;
+    std::list<tower> t;
 
     bool enemy_still_alive() {
-        return upcoming_enemy || e1.size();
+        return upcoming_enemy || e.size();
     }
 
-    bool collision(bullet1 b, enemy1 e) {
+    bool is_holding_tower() {
+        return holding_tower1 || holding_tower2 || holding_tower3;
+    }
+
+    bool collision(bullet b, enemy e) {
         return (b.x - std::get<0>(path[e.x])) * (b.x - std::get<0>(path[e.x])) + (b.y - std::get<1>(path[e.x])) * (b.y - std::get<1>(path[e.x])) <= 400;
     }
 
@@ -117,28 +121,28 @@ namespace logic {
         difficulty = x;
     }
 
-    void spawn_enemy(int x, int health) {
-        e1.emplace_back(x, enemy_speed, health * health_factor[difficulty]);
+    void spawn_enemy(int health) {
+        e.emplace_back(0, enemy_speed, health * health_factor[difficulty], 1);
     }
 
     bool in_grid(int mouse_x, int mouse_y) {
         return 0 <= mouse_x && mouse_x < 960 && 90 <= mouse_y && mouse_y < 510;
     }
 
-    void place_tower1(int mouse_x, int mouse_y) {
+    void place_tower(int mouse_x, int mouse_y, int type) {
         if (in_grid(mouse_x, mouse_y) && money >= 5) {
             int x = mouse_x / 60, y = (mouse_y - 90) / 60;
             if (!grid[y][x] && !tower_type[y][x]) {
                 money -= 5;
-                tower_type[y][x] = 1;
-                tower_id[y][x] = t1.size();
-                t1.emplace_back(x * 60 + 30, y * 60 + 120);
+                tower_type[y][x] = type;
+                tower_id[y][x] = t.size();
+                t.emplace_back(x * 60 + 30, y * 60 + 120, type);
             }
         }
     }
 
-    void spawn_bullet1(int x, int y, int damage, int target_x, int target_y) {
-        b1.emplace_back(x, y, damage, target_x, target_y);
+    void spawn_bullet(int x, int y, int damage, int knockback_distance, int type, int target_x, int target_y) {
+        b.emplace_back(x, y, damage, knockback_distance, type, target_x, target_y);
     }
 
     void animation(int mouse_x, int mouse_y) {
@@ -160,9 +164,7 @@ namespace logic {
         holding_tower1 = holding_tower2 = holding_tower3 = 0;
         current_wave.clear();
         path.clear();
-        e1.clear();
-        t1.clear();
-        b1.clear();
+        e.clear(), t.clear(), b.clear();
         for (int i = 0; i < 7; ++i) for (int j = 0; j < 16; ++j) {
             grid[i][j] = grid_level[level][i][j];
             tower_type[i][j] = 0;
@@ -189,42 +191,42 @@ namespace logic {
     }
 
     int do_logic() {
-        for (std::list<bullet1>::iterator i = b1.begin(); i != b1.end();) {
+        for (std::list<bullet>::iterator i = b.begin(); i != b.end();) {
             i->move();
             if (i->in_grid()) ++i;
-            else i = b1.erase(i);
+            else i = b.erase(i);
         }
-        for (std::list<enemy1>::iterator i = e1.begin(); i != e1.end();) {
+        for (std::list<enemy>::iterator i = e.begin(); i != e.end();) {
             i->move();
             if ((size_t)i->x >= path.size()) {
-                i = e1.erase(i);
+                i = e.erase(i);
                 if (lives) --lives;
             } else {
-                for (std::list<bullet1>::iterator j = b1.begin(); j != b1.end();) {
+                for (std::list<bullet>::iterator j = b.begin(); j != b.end();) {
                     if (collision(*j, *i)) {
                         i->damaged(j->damage);
-                        j = b1.erase(j);
+                        i->knockback(j->knockback_distance);
+                        j = b.erase(j);
                     } else {
                         ++j;
                     }
                 }
                 if (i->die()) {
-                    i = e1.erase(i);
+                    i = e.erase(i);
                     ++money;
                 } else {
                     ++i;
                 }
             }
         }
-        e1.sort();
-        for (std::list<tower1>::iterator i = t1.begin(); i != t1.end(); ++i) {
+        for (std::list<tower>::iterator i = t.begin(); i != t.end(); ++i) {
             bool no_enemy = 1;
-            for (std::list<enemy1>::reverse_iterator j = e1.rbegin(); j != e1.rend(); ++j) {
+            for (std::list<enemy>::reverse_iterator j = e.rbegin(); j != e.rend(); ++j) {
                 if (i->in_range(std::get<0>(path[j->x]), std::get<1>(path[j->x]))) {
                     no_enemy = 0;
                     i->load();
                     if (i->ready()) {
-                        spawn_bullet1(i->x, i->y, i->damage, std::get<0>(path[j->x]), std::get<1>(path[j->x]));
+                        spawn_bullet(i->x, i->y, i->damage, i->knockback_distance, i->type, std::get<0>(path[j->x]), std::get<1>(path[j->x]));
                         i->reset();
                     }
                     break;
@@ -238,13 +240,14 @@ namespace logic {
                 if (!current_wave[current_wave_ptr].number) {
                     ++current_wave_ptr;
                 } else {
-                    spawn_enemy(0, current_wave[current_wave_ptr].health);
+                    spawn_enemy(current_wave[current_wave_ptr].health);
                     --current_wave[current_wave_ptr].number;
                     --upcoming_enemy;
                 }
                 timer = 0;
             }
         }
+        e.sort();
         SDL_Event ev;
         while (SDL_PollEvent(&ev)) {
             if (ev.type == SDL_QUIT) return -1;
@@ -264,7 +267,7 @@ namespace logic {
                     holding_tower3 = 1;
                     holding_tower1 = holding_tower2 = 0;
                 } else if (holding_tower1) {
-                    place_tower1(mouse_x, mouse_y);
+                    place_tower(mouse_x, mouse_y, 1);
                     holding_tower1 = 0;
                 }
             }

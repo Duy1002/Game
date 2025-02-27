@@ -169,6 +169,67 @@ namespace graphic {
         }
     }
 
+    void draw_diamond(int x, int y, int r, int w) {
+        --w;
+        SDL_SetRenderDrawColor(renderer, 255, 255, 255, 255);
+        for (int i = r + w, j = 0; i >= 0; --i) {
+            while (i + j < r) ++j;
+            for (int k = j; k <= r + w; ++k) {
+                if (i + k > r + w) break;
+                SDL_RenderDrawPoint(renderer, x + i, y + k);
+            }
+        }
+        for (int i = r + w, j = 0; i >= 0; --i) {
+            while (i - j < r) --j;
+            for (int k = j; k >= -r - w; --k) {
+                if (i - k > r + w) break;
+                SDL_RenderDrawPoint(renderer, x + i, y + k);
+            }
+        }
+        for (int i = 0, j = r + w; i >= -r - w; --i) {
+            while (-i + j > r + w) --j;
+            for (int k = j; k >= 0; --k) {
+                if (-i + k < r) break;
+                SDL_RenderDrawPoint(renderer, x + i, y + k);
+            }
+        }
+        for (int i = 0, j = -r - w; i >= -r - w; --i) {
+            while (-i - j > r + w) ++j;
+            for (int k = j; k <= 0; ++k) {
+                if (-i - k < r) break;
+                SDL_RenderDrawPoint(renderer, x + i, y + k);
+            }
+        }
+    }
+
+    void draw_filled_black_diamond(int x, int y, int r) {
+        SDL_SetRenderDrawColor(renderer, 0, 0, 0, 255);
+        for (int i = 0; i > -r; --i) {
+            for (int j = 0; j > -r; --j) {
+                if (-i - j >= r) break;
+                SDL_RenderDrawPoint(renderer, x + i, y + j);
+            }
+        }
+        for (int i = 0; i < r; ++i) {
+            for (int j = 0; j > -r; --j) {
+                if (i - j >= r) break;
+                SDL_RenderDrawPoint(renderer, x + i, y + j);
+            }
+        }
+        for (int i = 0; i > -r; --i) {
+            for (int j = 0; j < r; ++j) {
+                if (-i + j >= r) break;
+                SDL_RenderDrawPoint(renderer, x + i, y + j);
+            }
+        }
+        for (int i = 0; i < r; ++i) {
+            for (int j = 0; j < r; ++j) {
+                if (i + j >= r) break;
+                SDL_RenderDrawPoint(renderer, x + i, y + j);
+            }
+        }
+    }
+
     void draw_half_filled_diamond(int x, int y, int r) {
         SDL_SetRenderDrawColor(renderer, 255, 255, 255, 255);
         for (int i = 0; i > -r; --i) {
@@ -614,37 +675,51 @@ namespace graphic {
             draw_string(std::get<0>(m.s[i]), std::get<1>(m.s[i]), std::get<2>(m.s[i]), std::get<3>(m.s[i]));
     }
 
-    void draw_enemy1(int x, int y, int health) {
-        draw_circle(x, y, 15, 3);
-        draw_filled_black_circle(x, y, 14);
-        if (health < 10) {
-            draw_char(x - 5, y - 6, 2, '0' + health);
-        } else {
-            draw_char(x - 11, y - 6, 2, '0' + health / 10);
-            draw_char(x + 1, y - 6, 2, '0' + health % 10);
+    void draw_enemy(enemy e) {
+        switch (e.type) {
+            case 1:
+                draw_circle(std::get<0>(logic::path[e.x]), std::get<1>(logic::path[e.x]), 20, 3);
+                draw_filled_black_circle(std::get<0>(logic::path[e.x]), std::get<1>(logic::path[e.x]), 19);
+                if (e.health < 10) {
+                    draw_char(std::get<0>(logic::path[e.x]) - 5, std::get<1>(logic::path[e.x]) - 6, 2, '0' + e.health);
+                } else {
+                    draw_char(std::get<0>(logic::path[e.x]) - 11, std::get<1>(logic::path[e.x]) - 6, 2, '0' + e.health / 10);
+                    draw_char(std::get<0>(logic::path[e.x]) + 1, std::get<1>(logic::path[e.x]) - 6, 2, '0' + e.health % 10);
+                }
+                break;
+            default: break;
         }
     }
 
-    void draw_bullet1(bullet1 b) {
-        draw_filled_circle(b.x, b.y, 5);
+    void draw_bullet(bullet b) {
+        switch (b.type) {
+            case 1:
+                draw_filled_circle(b.x, b.y, 5);
+                break;
+            default: break;
+        }
     }
 
-    void draw_tower1(tower1 t) {
-        draw_circle(t.x, t.y, 20, 5);
-        draw_filled_circle(t.x, t.y, 5);
+    void draw_tower(tower t) {
+        switch (t.type) {
+            case 1:
+            draw_circle(t.x, t.y, 20, 5);
+            draw_filled_circle(t.x, t.y, 5);
+            break;
+            default: break;
+        }
     }
 
     void draw_enemy() {
-        for (std::list<enemy1>::reverse_iterator i = logic::e1.rbegin(); i != logic::e1.rend(); ++i)
-            draw_enemy1(std::get<0>(logic::path[i->x]), std::get<1>(logic::path[i->x]), i->health);
+        for (std::list<enemy>::iterator i = logic::e.begin(); i != logic::e.end(); ++i) draw_enemy(*i);
     }
 
     void draw_bullet() {
-        for (std::list<bullet1>::iterator i = logic::b1.begin(); i != logic::b1.end(); ++i) draw_bullet1(*i);
+        for (std::list<bullet>::iterator i = logic::b.begin(); i != logic::b.end(); ++i) draw_bullet(*i);
     }
 
     void draw_tower() {
-        for (std::list<tower1>::iterator i = logic::t1.begin(); i != logic::t1.end(); ++i) draw_tower1(*i);
+        for (std::list<tower>::iterator i = logic::t.begin(); i != logic::t.end(); ++i) draw_tower(*i);
     }
 
     void draw_grid() {
@@ -748,6 +823,10 @@ namespace graphic {
             draw_rectangle(logic::tower1_x + 99, logic::tower1_y - 19, 2, 118);
             draw_circle(logic::tower1_x + 40, logic::tower1_y + 40, 30, 8);
             draw_filled_circle(logic::tower1_x + 40, logic::tower1_y + 40, 8);
+            if (!logic::is_holding_tower()) {
+                draw_circle(60, 570, 40, 10);
+                draw_filled_circle(60, 570, 10);
+            }
         } else {
             draw_rectangle(logic::tower1_x - 1, logic::tower1_y - 1, 82, 2);
             draw_rectangle(logic::tower1_x - 1, logic::tower1_y + 79, 82, 2);
@@ -791,6 +870,7 @@ namespace graphic {
         draw_filled_black_circle(mouse_x, mouse_y, 19);
         draw_filled_circle(mouse_x, mouse_y, 5);
         draw_circle(mouse_x, mouse_y, 210, 2);
+        draw_char(440, 522, 16, 'x');
     }
 
     void draw_playing_screen(int mouse_x, int mouse_y) {
