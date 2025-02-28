@@ -63,10 +63,10 @@ namespace logic {
     int current_level;
     bool grid[7][16], has_tower[7][16];
     int next_round_x = 323, next_round_y = 92, next_round_z = 707, next_round_t = 142;
-    int home_x = 1000, home_y = 506, home_z = 1080, home_t = 586;
-    int tower1_x = 1000, tower1_y = 134, tower1_z = 1080, tower1_t = 214;
-    int tower2_x = 1000, tower2_y = 258, tower2_z = 1080, tower2_t = 338;
-    int tower3_x = 1000, tower3_y = 382, tower3_z = 1080, tower3_t = 462;
+    int home_x = 1000, home_y = 526, home_z = 1080, home_t = 586;
+    int tower1_x = 1000, tower1_y = 124, tower1_z = 1080, tower1_t = 214;
+    int tower2_x = 1000, tower2_y = 248, tower2_z = 1080, tower2_t = 338;
+    int tower3_x = 1000, tower3_y = 372, tower3_z = 1080, tower3_t = 462;
     bool home_big, tower1_big, tower2_big, tower3_big;
     bool holding_tower1, holding_tower2, holding_tower3;
     int difficulty = 1, enemy_speed, lives, money, round, upcoming_enemy, time_between_enemy = 30, timer;
@@ -239,6 +239,7 @@ namespace logic {
                                 spawn_bullet(i->x, i->y, i->damage, i->knockback_distance, i->type, x, y);
                                 i->reset();
                             }
+                            break_loop = 1;
                         }
                         break;
                     }
@@ -250,19 +251,27 @@ namespace logic {
                                 spawn_bullet(i->x, i->y, i->damage, i->knockback_distance, i->type, x, y);
                                 i->reset();
                             }
+                            break_loop = 1;
                         }
                         break;
                     }
                     case 3: {
                         if (i->in_range(x, y)) {
-                            no_enemy = 0;
-                            i->load();
-                            if (i->ready() && (x == i->x || y == i->y)) {
+                            if (no_enemy) {
+                                i->load();
+                                no_enemy = 0;
+                            }
+                            if (!i->ready()) {
+                                break_loop = 1;
+                                break;
+                            }
+                            if (x == i->x || y == i->y) {
                                 spawn_bullet(i->x, i->y, i->damage, i->knockback_distance, i->type, i->x - 1, i->y);
                                 spawn_bullet(i->x, i->y, i->damage, i->knockback_distance, i->type, i->x + 1, i->y);
                                 spawn_bullet(i->x, i->y, i->damage, i->knockback_distance, i->type, i->x, i->y - 1);
                                 spawn_bullet(i->x, i->y, i->damage, i->knockback_distance, i->type, i->x, i->y + 1);
                                 i->reset();
+                                break_loop = 1;
                             }
                         }
                         break;
