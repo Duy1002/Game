@@ -25,6 +25,7 @@ namespace menu_system {
     menu *level4 = new menu();
     menu *playing = new menu();
     menu *are_you_sure = new menu();
+    menu *game_over = new menu();
 
     void init() {
         intro->b =
@@ -148,6 +149,14 @@ namespace menu_system {
         std::vector<std::tuple<int, int, int, const char*>>({
             std::make_tuple(185, 200, 6, "DO YOU WANT TO RETURN"),
             std::make_tuple(257, 254, 6, "TO THE MAIN MENU?")
+        });
+
+        game_over->b =
+        std::vector<std::tuple<button, menu*>>({
+            std::make_tuple(
+                button(46, 534, "BACK"),
+                intro
+            )
         });
     }
 };

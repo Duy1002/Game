@@ -27,9 +27,10 @@ namespace game {
                 graphic::present();
                 int game_state = logic::do_logic();
                 switch (game_state) {
-                    case -1: return;
+                    case -1:
+                        return;
                     case 0:
-                        current_menu = menu_system::intro;
+                        current_menu = menu_system::game_over;
                         break;
                     case 2:
                         current_menu = menu_system::are_you_sure;
@@ -39,6 +40,7 @@ namespace game {
             } else {
                 current_menu->animation(mouse_x, mouse_y);
                 graphic::reset_screen();
+                if (current_menu == menu_system::game_over) graphic::draw_game_over_screen();
                 graphic::draw_menu(*current_menu);
                 graphic::present();
                 while (SDL_PollEvent(&e)) {
@@ -73,7 +75,8 @@ namespace game {
                     current_menu = menu_system::playing;
                 }
             }
-            SDL_Delay(std::max(33 - (int)(clock() - start), 0));
+            int used_time = clock() - start;
+            SDL_Delay(used_time > 33 ? 0 : 33 - used_time);
         }
     }
 }

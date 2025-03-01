@@ -6,7 +6,7 @@
 struct enemy {
     int x, speed, health, type, init_health, health_health;
 
-    enemy(int x, int _speed, int _health, int type): x(x), speed(_speed), health(std::min(_health, 99)), type(type) {
+    enemy(int x, int _speed, int _health, int type): x(x), speed(_speed), health(_health < 99 ? _health : 99), type(type) {
         init_health = health;
         switch (type) {
             case 1:
@@ -50,7 +50,7 @@ struct enemy {
     }
 
     void knockback(int distance) {
-        x = std::max(x - distance, 0);
+        x = x < distance ? 0 : x - distance;
     }
 };
 

@@ -22,7 +22,7 @@ namespace logic {
     float health_factor[] = {0.5, 1, 1.5, 1.5};
     float speed_factor[] = {1, 1, 1, 1.5};
     const char *difficulty_name[] = {"EASY", "NORMAL", "HARD", "IMPOSSIBLE"};
-    bool grid_level[4][7][16] = {
+    bool grid_level[][7][16] = {
         {
             {1, 1, 1, 1, 1, 0, 0, 1, 1, 1, 1, 0, 0, 0, 0, 0},
             {0, 0, 0, 0, 1, 0, 0, 1, 0, 0, 1, 0, 0, 0, 0, 0},
@@ -61,6 +61,12 @@ namespace logic {
         }
     };
     int current_level;
+    int best_score[][4] = {
+        {0, 0, 0, 0},
+        {0, 0, 0, 0},
+        {0, 0, 0, 0},
+        {0, 0, 0, 0}
+    };
     bool grid[7][16], has_tower[7][16];
     int next_round_x = 323, next_round_y = 92, next_round_z = 707, next_round_t = 142;
     int home_x = 1000, home_y = 526, home_z = 1080, home_t = 586;
@@ -326,7 +332,11 @@ namespace logic {
                 }
             }
         }
-        if (!lives) return 0;
+        if (!lives) {
+            int current_best = best_score[current_level][difficulty];
+            best_score[current_level][difficulty] = current_best > round ? current_best : round;
+            return 0;
+        }
         return 1;
     }
 }

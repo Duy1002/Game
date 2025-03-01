@@ -649,6 +649,16 @@ namespace graphic {
         }
     }
 
+    void draw_int(int x, int y, int size, int num) {
+        int len = 0;
+        for (int i = num; i; i /= 10) ++len;
+        if (!len) len = 1;
+        char str[len + 1];
+        str[len] = '\0';
+        for (int i = len - 1; i >= 0; --i, num /= 10) str[i] = char('0' + num % 10);
+        draw_string(x, y, size, str);
+    }
+
     void draw_button(button b) {
         if (b.big) {
             for (size_t i = 0; i < b.s.size(); ++i)
@@ -709,24 +719,16 @@ namespace graphic {
                 int x = std::get<0>(logic::path[e.x]), y = std::get<1>(logic::path[e.x]);
                 draw_circle(x, y, 20, 3);
                 draw_filled_black_circle(x, y, 19);
-                if (e.health < 10) {
-                    draw_char(x - 5, y - 6, 2, '0' + e.health);
-                } else {
-                    draw_char(x - 11, y - 6, 2, '0' + e.health / 10);
-                    draw_char(x + 1, y - 6, 2, '0' + e.health % 10);
-                }
+                if (e.health < 10) draw_int(x - 5, y - 6, 2, e.health);
+                else draw_int(x - 11, y - 6, 2, e.health);
                 break;
             }
             case 2: {
                 int x = std::get<0>(logic::path[e.x]), y = std::get<1>(logic::path[e.x]);
                 draw_diamond(x, y, 20, 3);
                 draw_filled_black_diamond(x, y, 19);
-                if (e.health < 10) {
-                    draw_char(x - 5, y - 6, 2, '0' + e.health);
-                } else {
-                    draw_char(x - 11, y - 6, 2, '0' + e.health / 10);
-                    draw_char(x + 1, y - 6, 2, '0' + e.health % 10);
-                }
+                if (e.health < 10) draw_int(x - 5, y - 6, 2, e.health);
+                else draw_int(x - 11, y - 6, 2, e.health);
                 break;
             }
             case 3: {
@@ -736,12 +738,8 @@ namespace graphic {
                 draw_rectangle(x - 23, y - 20, 3, 40);
                 draw_rectangle(x + 20, y - 20, 3, 40);
                 draw_black_rectangle(x - 20, y - 20, 40, 40);
-                if (e.health < 10) {
-                    draw_char(x - 5, y - 6, 2, '0' + e.health);
-                } else {
-                    draw_char(x - 11, y - 6, 2, '0' + e.health / 10);
-                    draw_char(x + 1, y - 6, 2, '0' + e.health % 10);
-                }
+                if (e.health < 10) draw_int(x - 5, y - 6, 2, e.health);
+                else draw_int(x - 11, y - 6, 2, e.health);
                 break;
             }
             default: break;
@@ -820,40 +818,15 @@ namespace graphic {
 
     void draw_info() {
         draw_string(33, 33, 4, logic::difficulty_name[logic::difficulty]);
-        draw_string(400, 33, 4, "ROUND: ");
-        if (logic::round > 99) {
-            draw_char(548, 33, 4, char('0' + logic::round / 100));
-            draw_char(572, 33, 4, char('0' + (logic::round / 10) % 10));
-            draw_char(596, 33, 4, char('0' + logic::round % 10));
-        } else if (logic::round > 9) {
-            draw_char(548, 33, 4, char('0' + logic::round / 10));
-            draw_char(572, 33, 4, char('0' + logic::round % 10));
-        } else {
-            draw_char(548, 33, 4, char('0' + logic::round));
-        }
+        draw_string(376, 33, 4, "ROUND: ");
+        draw_int(524, 33, 4, logic::round);
         draw_string(735, 33, 4, "LIVES: ");
-        if (logic::lives > 9) {
-            draw_char(883, 33, 4, char('0' + logic::lives / 10));
-            draw_char(907, 33, 4, char('0' + logic::lives % 10));
-        } else {
-            draw_char(883, 33, 4, char('0' + logic::lives));
-        }
+        draw_int(883, 33, 4, logic::lives);
         draw_char(1078, 27, 6, char('$'));
-        if (logic::money > 999) {
-            draw_char(972, 33, 4, char('0' + logic::money / 1000));
-            draw_char(996, 33, 4, char('0' + (logic::money / 100) % 10));
-            draw_char(1020, 33, 4, char('0' + (logic::money / 10) % 10));
-            draw_char(1044, 33, 4, char('0' + logic::money % 10));
-        } else if (logic::money > 99) {
-            draw_char(996, 33, 4, char('0' + logic::money / 100));
-            draw_char(1020, 33, 4, char('0' + (logic::money / 10) % 10));
-            draw_char(1044, 33, 4, char('0' + logic::money % 10));
-        } else if (logic::money > 9) {
-            draw_char(1020, 33, 4, char('0' + logic::money / 10));
-            draw_char(1044, 33, 4, char('0' + logic::money % 10));
-        } else {
-            draw_char(1044, 33, 4, char('0' + logic::money));
-        }
+        if (logic::money > 999) draw_int(972, 33, 4, logic::money);
+        else if (logic::money > 99) draw_int(996, 33, 4, logic::money);
+        else if (logic::money > 9) draw_int(1020, 33, 4, logic::money);
+        else draw_int(1044, 33, 4, logic::money);
     }
 
     void draw_next_round_button() {
@@ -986,6 +959,30 @@ namespace graphic {
         if (logic::holding_tower1) draw_holding_tower1(mouse_x, mouse_y);
         else if (logic::holding_tower2) draw_holding_tower2(mouse_x, mouse_y);
         else if (logic::holding_tower3) draw_holding_tower3(mouse_x, mouse_y);
+    }
+
+    void draw_game_over_screen() {
+        draw_string(136, 25, 16, "GAME OVER");
+        draw_rectangle(260, 183, 600, 10);
+        draw_rectangle(250, 193, 10, 10);
+        draw_rectangle(240, 203, 10, 10);
+        draw_rectangle(860, 193, 10, 10);
+        draw_rectangle(870, 203, 10, 10);
+        draw_rectangle(230, 213, 10, 242);
+        draw_rectangle(880, 213, 10, 242);
+        draw_rectangle(240, 455, 10, 10);
+        draw_rectangle(250, 465, 10, 10);
+        draw_rectangle(870, 455, 10, 10);
+        draw_rectangle(860, 465, 10, 10);
+        draw_rectangle(260, 475, 600, 10);
+        draw_string(270, 218, 4, "LEVEL:");
+        draw_int(418, 218, 4, logic::current_level + 1);
+        draw_string(270, 286, 4, "DIFFICULTY:");
+        draw_string(534, 286, 4, logic::difficulty_name[logic::difficulty]);
+        draw_string(270, 354, 4, "SCORE:");
+        draw_int(418, 354, 4, logic::round);
+        draw_string(270, 422, 4, "BEST SCORE:");
+        draw_int(534, 422, 4, logic::best_score[logic::current_level][logic::difficulty]);
     }
 };
 
