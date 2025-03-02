@@ -41,7 +41,7 @@ namespace graphic {
             renderer = SDL_CreateSoftwareRenderer(SDL_GetWindowSurface(window));
         #else
             renderer = SDL_CreateRenderer(window, -1, SDL_RENDERER_ACCELERATED | SDL_RENDERER_PRESENTVSYNC);
-        #endif // VIRTUAL_MACHINE
+        #endif
         if (renderer == nullptr) log_error_and_exit("CreateRenderer", SDL_GetError());
         SDL_SetHint(SDL_HINT_RENDER_SCALE_QUALITY, "linear");
         SDL_RenderSetLogicalSize(renderer, SCREEN_WIDTH, SCREEN_HEIGHT);
@@ -788,7 +788,7 @@ namespace graphic {
     }
 
     void draw_tower() {
-        for (std::list<tower>::iterator i = logic::t.begin(); i != logic::t.end(); ++i) draw_tower(*i);
+        for (std::vector<tower>::iterator i = logic::t.begin(); i != logic::t.end(); ++i) draw_tower(*i);
     }
 
     void draw_grid() {
@@ -868,8 +868,17 @@ namespace graphic {
             draw_circle(logic::tower1_x + 40, logic::tower1_y + 40, 30, 8);
             draw_filled_circle(logic::tower1_x + 40, logic::tower1_y + 40, 8);
             if (!logic::is_holding_tower()) {
-                draw_circle(60, 570, 40, 10);
-                draw_filled_circle(60, 570, 10);
+                draw_string(31, 520, 2, "BASIC");
+                draw_circle(60, 580, 30, 8);
+                draw_filled_circle(60, 580, 8);
+                draw_rectangle(118, 510, 4, 120);
+                draw_string(130, 520, 2, "PRICE: 10");
+                draw_string(130, 542, 2, "DAMAGE: 1");
+                draw_string(130, 564, 2, "RANGE: 180");
+                draw_string(130, 586, 2, "RELOAD: 60");
+                draw_string(130, 608, 2, "KNOCKBACK: 0");
+                draw_rectangle(298, 510, 4, 120);
+                draw_string(330, 535, 4, "BASIC BULLET SHOOTING.");
             }
         } else {
             draw_rectangle(logic::tower1_x - 1, logic::tower1_y - 1, 82, 2);
@@ -890,6 +899,17 @@ namespace graphic {
             draw_circle(logic::tower2_x + 40, logic::tower2_y + 40, 30, 8);
             draw_filled_diamond(logic::tower2_x + 40, logic::tower2_y + 40, 8);
             if (!logic::is_holding_tower()) {
+                draw_string(7, 520, 2, "KNOCKBACK");
+                draw_circle(60, 580, 30, 8);
+                draw_filled_diamond(60, 580, 8);
+                draw_rectangle(118, 510, 4, 120);
+                draw_string(130, 520, 2, "PRICE: 10");
+                draw_string(130, 542, 2, "DAMAGE: 1");
+                draw_string(130, 564, 2, "RANGE: 180");
+                draw_string(130, 586, 2, "RELOAD: 75");
+                draw_string(130, 608, 2, "KNOCKBACK: 40");
+                draw_rectangle(298, 510, 4, 120);
+                draw_string(330, 535, 4, "KNOCKBACK BULLET SHOOTING.");
             }
         } else {
             draw_rectangle(logic::tower2_x - 1, logic::tower2_y - 1, 82, 2);
@@ -910,6 +930,18 @@ namespace graphic {
             draw_circle(logic::tower3_x + 40, logic::tower3_y + 40, 30, 8);
             draw_filled_circle(logic::tower3_x + 40, logic::tower3_y + 40, 16);
             if (!logic::is_holding_tower()) {
+                draw_string(7, 520, 2, "MULTISHOT");
+                draw_circle(60, 580, 30, 8);
+                draw_filled_circle(60, 580, 16);
+                draw_rectangle(118, 510, 4, 120);
+                draw_string(130, 520, 2, "PRICE: 20");
+                draw_string(130, 542, 2, "DAMAGE: 1");
+                draw_string(130, 564, 2, "RANGE: 120");
+                draw_string(130, 586, 2, "RELOAD: 10");
+                draw_string(130, 608, 2, "KNOCKBACK: 0");
+                draw_rectangle(298, 510, 4, 120);
+                draw_string(330, 535, 4, "SHOOTING BULLETS IN FOUR");
+                draw_string(330, 581, 4, "DIRECTIONS.");
             }
         } else {
             draw_rectangle(logic::tower3_x - 1, logic::tower3_y - 1, 82, 2);
@@ -925,7 +957,7 @@ namespace graphic {
         draw_circle(mouse_x, mouse_y, 20, 5);
         draw_filled_black_circle(mouse_x, mouse_y, 19);
         draw_filled_circle(mouse_x, mouse_y, 5);
-        draw_circle(mouse_x, mouse_y, 150, 2);
+        draw_circle(mouse_x, mouse_y, 180, 2);
         draw_char(440, 522, 16, 'x');
     }
 
@@ -933,7 +965,7 @@ namespace graphic {
         draw_circle(mouse_x, mouse_y, 20, 5);
         draw_filled_black_circle(mouse_x, mouse_y, 19);
         draw_filled_diamond(mouse_x, mouse_y, 5);
-        draw_circle(mouse_x, mouse_y, 150, 2);
+        draw_circle(mouse_x, mouse_y, 180, 2);
         draw_char(440, 522, 16, 'x');
     }
 
@@ -941,7 +973,7 @@ namespace graphic {
         draw_circle(mouse_x, mouse_y, 20, 5);
         draw_filled_black_circle(mouse_x, mouse_y, 19);
         draw_filled_circle(mouse_x, mouse_y, 10);
-        draw_circle(mouse_x, mouse_y, 90, 2);
+        draw_circle(mouse_x, mouse_y, 120, 2);
         draw_char(440, 522, 16, 'x');
     }
 

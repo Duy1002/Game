@@ -3,7 +3,6 @@
 
 
 
-#include <SDL.h>
 #include <tuple>
 #include <vector>
 

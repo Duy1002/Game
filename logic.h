@@ -14,7 +14,6 @@
 #include <algorithm>
 #include <ctime>
 #include <cstdlib>
-#include <cmath>
 
 
 
@@ -33,13 +32,13 @@ namespace logic {
             {1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0, 0, 0, 1, 1, 1}
         },
         {
-            {1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1},
-            {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1},
-            {1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1},
-            {1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
-            {1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0},
-            {0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0},
-            {0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1}
+            {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
+            {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
+            {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
+            {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
+            {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
+            {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
+            {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0}
         },
         {
             {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
@@ -76,12 +75,12 @@ namespace logic {
     bool home_big, tower1_big, tower2_big, tower3_big;
     bool holding_tower1, holding_tower2, holding_tower3;
     int difficulty = 1, enemy_speed, lives, money, round, upcoming_enemy, time_between_enemy = 30, timer;
-    size_t current_wave_ptr;
+    unsigned int current_wave_ptr;
     std::vector<waves::enemy_info> current_wave;
     std::vector<std::tuple<int, int>> path;
     std::list<enemy> e;
     std::list<bullet> b;
-    std::list<tower> t;
+    std::vector<tower> t;
 
     bool enemy_still_alive() {
         return upcoming_enemy || e.size();
@@ -93,7 +92,7 @@ namespace logic {
 
     bool collision(bullet b, enemy e) {
         int x = std::get<0>(path[e.x]), y = std::get<1>(path[e.x]);
-        return (b.x - x) * (b.x - x) + (b.y - y) * (b.y - y) <= 400;
+        return (b.x - x) * (b.x - x) + (b.y - y) * (b.y - y) <= 625;
     }
 
     bool touched_next_round_button(int mouse_x, int mouse_y) {
@@ -120,7 +119,8 @@ namespace logic {
         current_wave = waves::get_wave(round);
         current_wave_ptr = 0;
         timer = 0;
-        for (size_t i = 0; i < current_wave.size(); ++i) upcoming_enemy += current_wave[i].number;
+        for (std::vector<waves::enemy_info>::iterator i = current_wave.begin(); i != current_wave.end(); ++i)
+            upcoming_enemy += i->number;
         ++round;
     }
 
@@ -129,10 +129,12 @@ namespace logic {
     }
 
     void spawn_enemy(int health) {
+        health *= health_factor[difficulty];
+        if (!health) health = 1;
         int dice = rand() % 6;
-        if (dice < 3) e.emplace_back(0, enemy_speed, std::ceil(health * health_factor[difficulty]), 1);
-        else if (dice < 5) e.emplace_back(0, enemy_speed, std::ceil(health * health_factor[difficulty]), 2);
-        else e.emplace_back(0, enemy_speed, std::ceil(health * health_factor[difficulty]), 3);
+        if (dice < 3) e.emplace_back(0, enemy_speed, health, 1);
+        else if (dice < 5) e.emplace_back(0, enemy_speed, health, 2);
+        else e.emplace_back(0, enemy_speed, health, 3);
     }
 
     bool in_grid(int mouse_x, int mouse_y) {
@@ -169,7 +171,7 @@ namespace logic {
         current_level = level;
         enemy_speed = 2 * speed_factor[difficulty];
         lives = 20;
-        money = 1000;
+        money = 25;
         round = 0;
         upcoming_enemy = 0;
         home_big = tower1_big = tower2_big = tower3_big = 0;
@@ -231,7 +233,7 @@ namespace logic {
                 }
             }
         }
-        for (std::list<tower>::iterator i = t.begin(); i != t.end(); ++i) {
+        for (std::vector<tower>::iterator i = t.begin(); i != t.end(); ++i) {
             bool no_enemy = 1;
             for (std::list<enemy>::reverse_iterator j = e.rbegin(); j != e.rend(); ++j) {
                 int x = std::get<0>(path[j->x]), y = std::get<1>(path[j->x]);
@@ -271,7 +273,9 @@ namespace logic {
                                 break_loop = 1;
                                 break;
                             }
-                            if (x == i->x || y == i->y) {
+                            int dx = x > i->x ? x - i->x : i->x - x;
+                            int dy = y > i->y ? y - i->y : i->y - y;
+                            if (dx <= 5 || dy <= 5) {
                                 spawn_bullet(i->x, i->y, i->damage, i->knockback_distance, i->type, i->x - 1, i->y);
                                 spawn_bullet(i->x, i->y, i->damage, i->knockback_distance, i->type, i->x + 1, i->y);
                                 spawn_bullet(i->x, i->y, i->damage, i->knockback_distance, i->type, i->x, i->y - 1);

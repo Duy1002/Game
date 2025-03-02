@@ -9,13 +9,13 @@ struct tower {
     tower(int x, int y, int type): x(x), y(y), type(type), cnt(0) {
         switch (type) {
             case 1:
-                price = 10, range = 150, damage = 1, knockback_distance = 0, loading_time = 60;
+                price = 10, range = 180, damage = 1, knockback_distance = 0, loading_time = 60;
                 break;
             case 2:
-                price = 10, range = 150, damage = 1, knockback_distance = 40, loading_time = 75;
+                price = 10, range = 180, damage = 1, knockback_distance = 40, loading_time = 75;
                 break;
             case 3:
-                price = 20, range = 90, damage = 1, knockback_distance = 0, loading_time = 15;
+                price = 20, range = 120, damage = 1, knockback_distance = 0, loading_time = 10;
                 break;
             default: break;
         }

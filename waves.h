@@ -27,9 +27,9 @@ namespace waves {
         std::vector<enemy_info> res = waves[round % waves.size()];
         int add_health = round / waves.size();
         int add_number = add_health / 2;
-        for (size_t i = 0; i < res.size(); ++i) {
-            res[i].number += add_number;
-            res[i].health += add_health;
+        for (std::vector<waves::enemy_info>::iterator i = res.begin(); i != res.end(); ++i) {
+            i->number += add_number;
+            i->health += add_health;
         }
         return res;
     }
