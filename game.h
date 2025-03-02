@@ -65,15 +65,12 @@ namespace game {
                     logic::init(0);
                     current_menu = menu_system::playing;
                 } else if (current_menu == menu_system::level2) {
-                    return;
                     logic::init(1);
                     current_menu = menu_system::playing;
                 } else if (current_menu == menu_system::level3) {
-                    return;
                     logic::init(2);
                     current_menu = menu_system::playing;
                 } else if (current_menu == menu_system::level4) {
-                    return;
                     logic::init(3);
                     current_menu = menu_system::playing;
                 }
