@@ -72,6 +72,10 @@ namespace logic {
     int tower1_x = 1000, tower1_y = 124, tower1_z = 1080, tower1_t = 214;
     int tower2_x = 1000, tower2_y = 248, tower2_z = 1080, tower2_t = 338;
     int tower3_x = 1000, tower3_y = 372, tower3_z = 1080, tower3_t = 462;
+    int upgrade1_x = 310, upgrade1_y = 520, upgrade1_z = 570, upgrade1_t = 620;
+    int upgrade2_x = 580, upgrade2_y = 520, upgrade2_z = 840, upgrade2_t = 620;
+    int sell_x = 850, sell_y = 520, sell_z = 950, sell_t = 620;
+    int choosing_tower_id;
     bool home_big, tower1_big, tower2_big, tower3_big;
     bool holding_tower1, holding_tower2, holding_tower3;
     int difficulty = 1, enemy_speed, lives, money, round, upcoming_enemy, time_between_enemy = 30, timer;
@@ -88,6 +92,14 @@ namespace logic {
 
     bool is_holding_tower() {
         return holding_tower1 || holding_tower2 || holding_tower3;
+    }
+
+    bool is_choosing_tower() {
+        return ~choosing_tower_id;
+    }
+
+    bool is_touching_tower_button() {
+        return tower1_big || tower2_big || tower3_big;
     }
 
     bool collision(bullet b, enemy e) {
@@ -115,6 +127,18 @@ namespace logic {
         return tower3_x <= mouse_x && mouse_x <= tower3_z && tower3_y <= mouse_y && mouse_y <= tower3_t;
     }
 
+    bool touched_upgrade1_button(int mouse_x, int mouse_y) {
+        return upgrade1_x <= mouse_x && mouse_x <= upgrade1_z && upgrade1_y <= mouse_y && mouse_y <= upgrade1_t;
+    }
+
+    bool touched_upgrade2_button(int mouse_x, int mouse_y) {
+        return upgrade2_x <= mouse_x && mouse_x <= upgrade2_z && upgrade2_y <= mouse_y && mouse_y <= upgrade2_t;
+    }
+
+    bool touched_sell_button(int mouse_x, int mouse_y) {
+        return sell_x <= mouse_x && mouse_x <= sell_z && sell_y <= mouse_y && mouse_y <= sell_t;
+    }
+
     void next_round() {
         current_wave = waves::get_wave(round);
         current_wave_ptr = 0;
@@ -137,6 +161,10 @@ namespace logic {
         else e.emplace_back(0, enemy_speed, health, 3);
     }
 
+    void spawn_bullet(int x, int y, int damage, int knockback_distance, int type, int target_x, int target_y) {
+        b.emplace_back(x, y, damage, knockback_distance, type, target_x, target_y);
+    }
+
     bool in_grid(int mouse_x, int mouse_y) {
         return 0 <= mouse_x && mouse_x < 960 && 90 <= mouse_y && mouse_y < 510;
     }
@@ -153,8 +181,73 @@ namespace logic {
         }
     }
 
-    void spawn_bullet(int x, int y, int damage, int knockback_distance, int type, int target_x, int target_y) {
-        b.emplace_back(x, y, damage, knockback_distance, type, target_x, target_y);
+    void get_tower_id(int mouse_x, int mouse_y) {
+        choosing_tower_id = -1;
+        if (in_grid(mouse_x, mouse_y)) {
+            int x = mouse_x / 60, y = (mouse_y - 90) / 60;
+            if (has_tower[y][x]) {
+                mouse_x = x * 60 + 30;
+                mouse_y = y * 60 + 120;
+                for (std::vector<tower>::iterator i = t.begin(); i != t.end(); ++i) {
+                    if (i->x == mouse_x && i->y == mouse_y) {
+                        choosing_tower_id = i - t.begin();
+                        break;
+                    }
+                }
+            }
+        }
+    }
+
+    void upgrade1() {
+        std::vector<tower>::iterator i = t.begin() + choosing_tower_id;
+        if (!i->upgraded1) {
+            switch (i->type) {
+                case 1:
+                    if (money < TOWER1_UPGRADE1_PRICE) return;
+                    money -= TOWER1_UPGRADE1_PRICE;
+                    break;
+                case 2:
+                    if (money < TOWER2_UPGRADE1_PRICE) return;
+                    money -= TOWER2_UPGRADE1_PRICE;
+                    break;
+                case 3:
+                    if (money < TOWER3_UPGRADE1_PRICE) return;
+                    money -= TOWER3_UPGRADE1_PRICE;
+                    break;
+                default: break;
+            }
+            i->upgrade1();
+        }
+    }
+
+    void upgrade2() {
+        std::vector<tower>::iterator i = t.begin() + choosing_tower_id;
+        if (!i->upgraded2) {
+            switch (i->type) {
+                case 1:
+                    if (money < TOWER1_UPGRADE2_PRICE) return;
+                    money -= TOWER1_UPGRADE2_PRICE;
+                    break;
+                case 2:
+                    if (money < TOWER2_UPGRADE2_PRICE) return;
+                    money -= TOWER2_UPGRADE2_PRICE;
+                    break;
+                case 3:
+                    if (money < TOWER3_UPGRADE2_PRICE) return;
+                    money -= TOWER3_UPGRADE2_PRICE;
+                    break;
+                default: break;
+            }
+            i->upgrade2();
+        }
+    }
+
+    void sell_tower() {
+        std::vector<tower>::iterator i = t.begin() + choosing_tower_id;
+        money += i->price * SELL_PRICE_FACTOR;
+        has_tower[(i->y - 120) / 60][(i->x - 30) / 60] = 0;
+        t.erase(i);
+        choosing_tower_id = -1;
     }
 
     void animation(int mouse_x, int mouse_y) {
@@ -169,11 +262,12 @@ namespace logic {
         current_level = level;
         enemy_speed = 2 * speed_factor[difficulty];
         lives = 20;
-        money = 25;
+        money = 2500;
         round = 0;
         upcoming_enemy = 0;
         home_big = tower1_big = tower2_big = tower3_big = 0;
         holding_tower1 = holding_tower2 = holding_tower3 = 0;
+        choosing_tower_id = -1;
         current_wave.clear();
         path.clear();
         e.clear(), t.clear(), b.clear();
@@ -317,16 +411,19 @@ namespace logic {
                     if (money >= TOWER1_INIT_PRICE) {
                         holding_tower1 = 1;
                         holding_tower2 = holding_tower3 = 0;
+                        choosing_tower_id = -1;
                     }
                 } else if (touched_tower2_button(mouse_x, mouse_y)) {
                     if (money >= TOWER2_INIT_PRICE) {
                         holding_tower2 = 1;
                         holding_tower1 = holding_tower3 = 0;
+                        choosing_tower_id = -1;
                     }
                 } else if (touched_tower3_button(mouse_x, mouse_y)) {
                     if (money >= TOWER3_INIT_PRICE) {
                         holding_tower3 = 1;
                         holding_tower1 = holding_tower2 = 0;
+                        choosing_tower_id = -1;
                     }
                 } else if (holding_tower1) {
                     place_tower(mouse_x, mouse_y, 1);
@@ -337,6 +434,15 @@ namespace logic {
                 } else if (holding_tower3) {
                     place_tower(mouse_x, mouse_y, 3);
                     holding_tower3 = 0;
+                } else {
+                    if (!is_choosing_tower()) {
+                        get_tower_id(mouse_x, mouse_y);
+                    } else {
+                        if (touched_upgrade1_button(mouse_x, mouse_y)) upgrade1();
+                        else if (touched_upgrade2_button(mouse_x, mouse_y)) upgrade2();
+                        else if (touched_sell_button(mouse_x, mouse_y)) sell_tower();
+                        else get_tower_id(mouse_x, mouse_y);
+                    }
                 }
             }
         }

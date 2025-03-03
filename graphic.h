@@ -992,6 +992,77 @@ namespace graphic {
         draw_char(440, 522, 16, 'x');
     }
 
+    void draw_choosing_tower() {
+        std::vector<tower>::iterator i = logic::t.begin() + logic::choosing_tower_id;
+        draw_circle(i->x, i->y, i->range, 2);
+        if (!logic::is_touching_tower_button()) {
+            switch (i->type) {
+                case 1:
+                    draw_string(31, 520, 2, "BASIC");
+                    draw_circle(60, 580, 30, 8);
+                    draw_filled_circle(60, 580, 8);
+                    draw_rectangle(118, 510, 4, 120);
+                    draw_string(130, 520, 2, "PRICE:");
+                    draw_int(202, 520, 2, i->price);
+                    draw_string(130, 542, 2, "DAMAGE:");
+                    draw_int(214, 542, 2, i->damage);
+                    draw_string(130, 564, 2, "RANGE:");
+                    draw_int(202, 564, 2, i->range);
+                    draw_string(130, 586, 2, "RELOAD:");
+                    draw_int(214, 586, 2, i->loading_time);
+                    draw_string(130, 608, 2, "KNOCKBACK:");
+                    draw_int(250, 608, 2, i->knockback_distance);
+                    break;
+                case 2:
+                    draw_string(7, 520, 2, "KNOCKBACK");
+                    draw_circle(60, 580, 30, 8);
+                    draw_filled_diamond(60, 580, 8);
+                    draw_rectangle(118, 510, 4, 120);
+                    draw_string(130, 520, 2, "PRICE:");
+                    draw_int(202, 520, 2, i->price);
+                    draw_string(130, 542, 2, "DAMAGE:");
+                    draw_int(214, 542, 2, i->damage);
+                    draw_string(130, 564, 2, "RANGE:");
+                    draw_int(202, 564, 2, i->range);
+                    draw_string(130, 586, 2, "RELOAD:");
+                    draw_int(214, 586, 2, i->loading_time);
+                    draw_string(130, 608, 2, "KNOCKBACK:");
+                    draw_int(250, 608, 2, i->knockback_distance);
+                    break;
+                case 3:
+                    draw_string(7, 520, 2, "MULTISHOT");
+                    draw_circle(60, 580, 30, 8);
+                    draw_filled_circle(60, 580, 16);
+                    draw_rectangle(118, 510, 4, 120);
+                    draw_string(130, 520, 2, "PRICE:");
+                    draw_int(202, 520, 2, i->price);
+                    draw_string(130, 542, 2, "DAMAGE:");
+                    draw_int(214, 542, 2, i->damage);
+                    draw_string(130, 564, 2, "RANGE:");
+                    draw_int(202, 564, 2, i->range);
+                    draw_string(130, 586, 2, "RELOAD:");
+                    draw_int(214, 586, 2, i->loading_time);
+                    draw_string(130, 608, 2, "KNOCKBACK:");
+                    draw_int(250, 608, 2, i->knockback_distance);
+                    break;
+                default: break;
+            }
+            draw_rectangle(298, 510, 4, 120);
+            draw_rectangle(logic::upgrade1_x - 2, logic::upgrade1_y - 2, 264, 4);
+            draw_rectangle(logic::upgrade1_x - 2, logic::upgrade1_y + 98, 264, 4);
+            draw_rectangle(logic::upgrade1_x - 2, logic::upgrade1_y + 2, 4, 96);
+            draw_rectangle(logic::upgrade1_x + 258, logic::upgrade1_y + 2, 4, 96);
+            draw_rectangle(logic::upgrade2_x - 2, logic::upgrade2_y - 2, 264, 4);
+            draw_rectangle(logic::upgrade2_x - 2, logic::upgrade2_y + 98, 264, 4);
+            draw_rectangle(logic::upgrade2_x - 2, logic::upgrade2_y + 2, 4, 96);
+            draw_rectangle(logic::upgrade2_x + 258, logic::upgrade2_y + 2, 4, 96);
+            draw_rectangle(logic::sell_x - 2, logic::sell_y - 2, 104, 4);
+            draw_rectangle(logic::sell_x - 2, logic::sell_y + 98, 104, 4);
+            draw_rectangle(logic::sell_x - 2, logic::sell_y + 2, 4, 96);
+            draw_rectangle(logic::sell_x + 98, logic::sell_y + 2, 4, 96);
+        }
+    }
+
     void draw_playing_screen(int mouse_x, int mouse_y) {
         draw_enemy();
         draw_bullet();
@@ -1006,6 +1077,7 @@ namespace graphic {
         if (logic::holding_tower1) draw_holding_tower1(mouse_x, mouse_y);
         else if (logic::holding_tower2) draw_holding_tower2(mouse_x, mouse_y);
         else if (logic::holding_tower3) draw_holding_tower3(mouse_x, mouse_y);
+        if (logic::is_choosing_tower()) draw_choosing_tower();
     }
 
     void draw_game_over_screen() {
