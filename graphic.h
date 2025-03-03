@@ -593,6 +593,16 @@ namespace graphic {
         draw_rectangle(x + size * 2, y + size * 5, size, size);
     }
 
+    void draw_minus(int x, int y, int size) {
+        draw_rectangle(x, y + size * 5 / 2, size * 5, size);
+    }
+
+    void draw_plus(int x, int y, int size) {
+        draw_rectangle(x, y + size * 5 / 2, size * 5, size);
+        draw_rectangle(x + size * 2, y + size / 2, size, size * 2);
+        draw_rectangle(x + size * 2, y + size * 7 / 2, size, size * 2);
+    }
+
     void draw_char(int x, int y, int size, char c) {
         switch (c) {
             case 'A': draw_A(x, y, size); break;
@@ -636,6 +646,8 @@ namespace graphic {
             case 'x': draw_x(x, y, size); break;
             case '$': draw_dollar(x, y, size); break;
             case '?': draw_question(x, y, size); break;
+            case '-': draw_minus(x, y, size); break;
+            case '+': draw_plus(x, y, size); break;
             default: break;
         }
     }
@@ -657,6 +669,16 @@ namespace graphic {
         str[len] = '\0';
         for (int i = len - 1; i >= 0; --i, num /= 10) str[i] = char('0' + num % 10);
         draw_string(x, y, size, str);
+    }
+
+    void draw_int_right_corner(int z, int t, int size, int num) {
+        int len = 0;
+        for (int i = num; i; i /= 10) ++len;
+        if (!len) len = 1;
+        char str[len + 1];
+        str[len] = '\0';
+        for (int i = len - 1; i >= 0; --i, num /= 10) str[i] = char('0' + num % 10);
+        draw_string(z - size * (len * 6 - 1), t - size * 6, size, str);
     }
 
     void draw_button(button b) {
@@ -823,10 +845,7 @@ namespace graphic {
         draw_string(735, 33, 4, "LIVES: ");
         draw_int(883, 33, 4, logic::lives);
         draw_char(1078, 27, 6, char('$'));
-        if (logic::money > 999) draw_int(972, 33, 4, logic::money);
-        else if (logic::money > 99) draw_int(996, 33, 4, logic::money);
-        else if (logic::money > 9) draw_int(1020, 33, 4, logic::money);
-        else draw_int(1044, 33, 4, logic::money);
+        draw_int_right_corner(1068, 57, 4, logic::money);
     }
 
     void draw_next_round_button() {
@@ -1012,6 +1031,20 @@ namespace graphic {
                     draw_int(214, 586, 2, i->loading_time);
                     draw_string(130, 608, 2, "KNOCKBACK:");
                     draw_int(250, 608, 2, i->knockback_distance);
+                    if (i->upgraded1) {
+                        draw_string(346, 558, 4, "UPGRADED");
+                    } else {
+                        draw_string(370, 558, 4, "+RANGE");
+                        draw_int_right_corner(560, 542, 2, TOWER1_UPGRADE1_PRICE);
+                    }
+                    if (i->upgraded2) {
+                        draw_string(616, 558, 4, "UPGRADED");
+                    } else {
+                        draw_string(628, 558, 4, "+DAMAGE");
+                        draw_int_right_corner(830, 542, 2, TOWER1_UPGRADE2_PRICE);
+                    }
+                    draw_string(854, 558, 4, "SELL");
+                    draw_int_right_corner(940, 542, 2, i->price * SELL_PRICE_FACTOR);
                     break;
                 case 2:
                     draw_string(7, 520, 2, "KNOCKBACK");
@@ -1028,6 +1061,20 @@ namespace graphic {
                     draw_int(214, 586, 2, i->loading_time);
                     draw_string(130, 608, 2, "KNOCKBACK:");
                     draw_int(250, 608, 2, i->knockback_distance);
+                    if (i->upgraded1) {
+                        draw_string(346, 558, 4, "UPGRADED");
+                    } else {
+                        draw_string(370, 558, 4, "+RANGE");
+                        draw_int_right_corner(560, 542, 2, TOWER2_UPGRADE1_PRICE);
+                    }
+                    if (i->upgraded2) {
+                        draw_string(616, 558, 4, "UPGRADED");
+                    } else {
+                        draw_string(592, 558, 4, "+KNOCKBACK");
+                        draw_int_right_corner(830, 542, 2, TOWER2_UPGRADE2_PRICE);
+                    }
+                    draw_string(854, 558, 4, "SELL");
+                    draw_int_right_corner(940, 542, 2, i->price * SELL_PRICE_FACTOR);
                     break;
                 case 3:
                     draw_string(7, 520, 2, "MULTISHOT");
@@ -1044,6 +1091,20 @@ namespace graphic {
                     draw_int(214, 586, 2, i->loading_time);
                     draw_string(130, 608, 2, "KNOCKBACK:");
                     draw_int(250, 608, 2, i->knockback_distance);
+                    if (i->upgraded1) {
+                        draw_string(346, 558, 4, "UPGRADED");
+                    } else {
+                        draw_string(370, 558, 4, "+RANGE");
+                        draw_int_right_corner(560, 542, 2, TOWER3_UPGRADE1_PRICE);
+                    }
+                    if (i->upgraded2) {
+                        draw_string(616, 558, 4, "UPGRADED");
+                    } else {
+                        draw_string(628, 558, 4, "-RELOAD");
+                        draw_int_right_corner(830, 542, 2, TOWER3_UPGRADE2_PRICE);
+                    }
+                    draw_string(854, 558, 4, "SELL");
+                    draw_int_right_corner(940, 542, 2, i->price * SELL_PRICE_FACTOR);
                     break;
                 default: break;
             }

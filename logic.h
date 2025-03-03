@@ -262,7 +262,7 @@ namespace logic {
         current_level = level;
         enemy_speed = 2 * speed_factor[difficulty];
         lives = 20;
-        money = 2500;
+        money = 25;
         round = 0;
         upcoming_enemy = 0;
         home_big = tower1_big = tower2_big = tower3_big = 0;
