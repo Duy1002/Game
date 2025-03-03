@@ -146,11 +146,9 @@ namespace logic {
             int x = mouse_x / 60, y = (mouse_y - 90) / 60;
             if (!grid[y][x] && !has_tower[y][x]) {
                 tower tmp(x * 60 + 30, y * 60 + 120, type);
-                if (money >= tmp.price) {
-                    money -= tmp.price;
-                    has_tower[y][x] = 1;
-                    t.emplace_back(tmp);
-                }
+                money -= tmp.price;
+                has_tower[y][x] = 1;
+                t.emplace_back(tmp);
             }
         }
     }
@@ -316,14 +314,20 @@ namespace logic {
                 if (!enemy_still_alive() && touched_next_round_button(mouse_x, mouse_y)) {
                     next_round();
                 } else if (touched_tower1_button(mouse_x, mouse_y)) {
-                    holding_tower1 = 1;
-                    holding_tower2 = holding_tower3 = 0;
+                    if (money >= TOWER1_INIT_PRICE) {
+                        holding_tower1 = 1;
+                        holding_tower2 = holding_tower3 = 0;
+                    }
                 } else if (touched_tower2_button(mouse_x, mouse_y)) {
-                    holding_tower2 = 1;
-                    holding_tower1 = holding_tower3 = 0;
+                    if (money >= TOWER2_INIT_PRICE) {
+                        holding_tower2 = 1;
+                        holding_tower1 = holding_tower3 = 0;
+                    }
                 } else if (touched_tower3_button(mouse_x, mouse_y)) {
-                    holding_tower3 = 1;
-                    holding_tower1 = holding_tower2 = 0;
+                    if (money >= TOWER3_INIT_PRICE) {
+                        holding_tower3 = 1;
+                        holding_tower1 = holding_tower2 = 0;
+                    }
                 } else if (holding_tower1) {
                     place_tower(mouse_x, mouse_y, 1);
                     holding_tower1 = 0;

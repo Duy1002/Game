@@ -957,7 +957,7 @@ namespace graphic {
         draw_circle(mouse_x, mouse_y, 20, 5);
         draw_filled_black_circle(mouse_x, mouse_y, 19);
         draw_filled_circle(mouse_x, mouse_y, 5);
-        draw_circle(mouse_x, mouse_y, 180, 2);
+        draw_circle(mouse_x, mouse_y, TOWER1_INIT_RANGE, 2);
         draw_char(440, 522, 16, 'x');
     }
 
@@ -965,7 +965,7 @@ namespace graphic {
         draw_circle(mouse_x, mouse_y, 20, 5);
         draw_filled_black_circle(mouse_x, mouse_y, 19);
         draw_filled_diamond(mouse_x, mouse_y, 5);
-        draw_circle(mouse_x, mouse_y, 180, 2);
+        draw_circle(mouse_x, mouse_y, TOWER2_INIT_RANGE, 2);
         draw_char(440, 522, 16, 'x');
     }
 
@@ -973,7 +973,7 @@ namespace graphic {
         draw_circle(mouse_x, mouse_y, 20, 5);
         draw_filled_black_circle(mouse_x, mouse_y, 19);
         draw_filled_circle(mouse_x, mouse_y, 10);
-        draw_circle(mouse_x, mouse_y, 120, 2);
+        draw_circle(mouse_x, mouse_y, TOWER3_INIT_RANGE, 2);
         draw_char(440, 522, 16, 'x');
     }
 
