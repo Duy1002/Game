@@ -872,13 +872,18 @@ namespace graphic {
                 draw_circle(60, 580, 30, 8);
                 draw_filled_circle(60, 580, 8);
                 draw_rectangle(118, 510, 4, 120);
-                draw_string(130, 520, 2, "PRICE: 10");
-                draw_string(130, 542, 2, "DAMAGE: 1");
-                draw_string(130, 564, 2, "RANGE: 180");
-                draw_string(130, 586, 2, "RELOAD: 60");
-                draw_string(130, 608, 2, "KNOCKBACK: 0");
+                draw_string(130, 520, 2, "PRICE:");
+                draw_int(202, 520, 2, TOWER1_INIT_PRICE);
+                draw_string(130, 542, 2, "DAMAGE:");
+                draw_int(214, 542, 2, TOWER1_INIT_DAMAGE);
+                draw_string(130, 564, 2, "RANGE:");
+                draw_int(202, 564, 2, TOWER1_INIT_RANGE);
+                draw_string(130, 586, 2, "RELOAD:");
+                draw_int(214, 586, 2, TOWER1_INIT_LOADING_TIME);
+                draw_string(130, 608, 2, "KNOCKBACK:");
+                draw_int(250, 608, 2, TOWER1_INIT_KNOCKBACK_DISTANCE);
                 draw_rectangle(298, 510, 4, 120);
-                draw_string(330, 535, 4, "BASIC BULLET SHOOTING.");
+                draw_string(330, 535, 4, "SHOOT BASIC BULLETS.");
             }
         } else {
             draw_rectangle(logic::tower1_x - 1, logic::tower1_y - 1, 82, 2);
@@ -903,13 +908,18 @@ namespace graphic {
                 draw_circle(60, 580, 30, 8);
                 draw_filled_diamond(60, 580, 8);
                 draw_rectangle(118, 510, 4, 120);
-                draw_string(130, 520, 2, "PRICE: 10");
-                draw_string(130, 542, 2, "DAMAGE: 1");
-                draw_string(130, 564, 2, "RANGE: 180");
-                draw_string(130, 586, 2, "RELOAD: 75");
-                draw_string(130, 608, 2, "KNOCKBACK: 40");
+                draw_string(130, 520, 2, "PRICE:");
+                draw_int(202, 520, 2, TOWER2_INIT_PRICE);
+                draw_string(130, 542, 2, "DAMAGE:");
+                draw_int(214, 542, 2, TOWER2_INIT_DAMAGE);
+                draw_string(130, 564, 2, "RANGE:");
+                draw_int(202, 564, 2, TOWER2_INIT_RANGE);
+                draw_string(130, 586, 2, "RELOAD:");
+                draw_int(214, 586, 2, TOWER2_INIT_LOADING_TIME);
+                draw_string(130, 608, 2, "KNOCKBACK:");
+                draw_int(250, 608, 2, TOWER2_INIT_KNOCKBACK_DISTANCE);
                 draw_rectangle(298, 510, 4, 120);
-                draw_string(330, 535, 4, "KNOCKBACK BULLET SHOOTING.");
+                draw_string(330, 535, 4, "SHOOT KNOCKBACK BULLETS.");
             }
         } else {
             draw_rectangle(logic::tower2_x - 1, logic::tower2_y - 1, 82, 2);
@@ -934,13 +944,18 @@ namespace graphic {
                 draw_circle(60, 580, 30, 8);
                 draw_filled_circle(60, 580, 16);
                 draw_rectangle(118, 510, 4, 120);
-                draw_string(130, 520, 2, "PRICE: 20");
-                draw_string(130, 542, 2, "DAMAGE: 1");
-                draw_string(130, 564, 2, "RANGE: 120");
-                draw_string(130, 586, 2, "RELOAD: 10");
-                draw_string(130, 608, 2, "KNOCKBACK: 0");
+                draw_string(130, 520, 2, "PRICE:");
+                draw_int(202, 520, 2, TOWER3_INIT_PRICE);
+                draw_string(130, 542, 2, "DAMAGE:");
+                draw_int(214, 542, 2, TOWER3_INIT_DAMAGE);
+                draw_string(130, 564, 2, "RANGE:");
+                draw_int(202, 564, 2, TOWER3_INIT_RANGE);
+                draw_string(130, 586, 2, "RELOAD:");
+                draw_int(214, 586, 2, TOWER3_INIT_LOADING_TIME);
+                draw_string(130, 608, 2, "KNOCKBACK:");
+                draw_int(250, 608, 2, TOWER3_INIT_KNOCKBACK_DISTANCE);
                 draw_rectangle(298, 510, 4, 120);
-                draw_string(330, 535, 4, "SHOOTING BULLETS IN FOUR");
+                draw_string(330, 535, 4, "SHOOT BULLETS IN FOUR");
                 draw_string(330, 581, 4, "DIRECTIONS.");
             }
         } else {
