@@ -8,6 +8,7 @@
 #include "bullet.h"
 #include "tower.h"
 #include "waves.h"
+#include "sound.h"
 #include <vector>
 #include <list>
 #include <tuple>
@@ -243,6 +244,7 @@ namespace logic {
     }
 
     void sell_tower() {
+        sound::play(sound::sell_tower);
         std::vector<tower>::iterator i = t.begin() + choosing_tower_id;
         money += i->price * SELL_PRICE_FACTOR;
         has_tower[(i->y - 120) / 60][(i->x - 30) / 60] = 0;

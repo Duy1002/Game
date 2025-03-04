@@ -62,11 +62,12 @@
 	"button.h"
 	"menu.h"
 
-1740916128 source:c:\users\dell\desktop\game\main.cpp
+1741094043 source:c:\users\dell\desktop\game\main.cpp
 	"graphic.h"
 	"game.h"
+	"sound.h"
 
-1741024882 c:\users\dell\desktop\game\graphic.h
+1741093984 c:\users\dell\desktop\game\graphic.h
 	<SDL.h>
 	"button.h"
 	"menu.h"
@@ -82,17 +83,19 @@
 	<tuple>
 	<vector>
 
-1740929466 c:\users\dell\desktop\game\menu.h
+1741103475 c:\users\dell\desktop\game\menu.h
 	<vector>
 	<tuple>
 	"button.h"
+	"sound.h"
 
-1741025687 c:\users\dell\desktop\game\logic.h
+1741104206 c:\users\dell\desktop\game\logic.h
 	<SDL.h>
 	"enemy.h"
 	"bullet.h"
 	"tower.h"
 	"waves.h"
+	"sound.h"
 	<vector>
 	<list>
 	<tuple>
@@ -111,14 +114,14 @@
 1741058661 c:\users\dell\desktop\game\waves.h
 	<vector>
 
-1740936827 c:\users\dell\desktop\game\game.h
+1741103485 c:\users\dell\desktop\game\game.h
 	<SDL.h>
-	<array>
 	"menu_system.h"
 	"logic.h"
+	"sound.h"
 	<ctime>
 
-1740844402 c:\users\dell\desktop\game\menu_system.h
+1741097186 c:\users\dell\desktop\game\menu_system.h
 	<vector>
 	<tuple>
 	"button.h"
@@ -516,4 +519,8 @@
 	"SDL_stdinc.h"
 	"begin_code.h"
 	"close_code.h"
+
+1741103627 c:\users\dell\desktop\game\sound.h
+	<SDL.h>
+	<SDL_mixer.h>
 

@@ -11,11 +11,12 @@
 
 
 namespace menu_system {
+    menu *null_menu = NULL;
     menu *quit = new menu();
     menu *intro = new menu();
     menu *difficulty = new menu();
     menu *difficulty_easy = new menu();
-    menu *difficulty_medium = new menu();
+    menu *difficulty_normal = new menu();
     menu *difficulty_hard = new menu();
     menu *difficulty_impossible = new menu();
     menu *level_selection = new menu();
@@ -49,6 +50,8 @@ namespace menu_system {
             std::make_tuple(232, 160, 16, "DEFENSE")
         });
 
+
+
         difficulty->rect =
         std::vector<std::tuple<int, int, int, int>>({
             std::make_tuple(150, 0, 10, 150),
@@ -77,7 +80,7 @@ namespace menu_system {
                         std::make_tuple(200, 90, 6, "ENEMY SPEED x1")
                     })
                 ),
-                difficulty_medium
+                difficulty_normal
             ),
             std::make_tuple(
                 button(267, 384, "HARD",
@@ -98,6 +101,196 @@ namespace menu_system {
                 difficulty_impossible
             )
         });
+
+
+
+        difficulty_easy->rect = difficulty->rect;
+        difficulty_easy->b =
+        std::vector<std::tuple<button, menu*>>({
+            std::make_tuple(
+                button(46, 534, "BACK"),
+                intro
+            ),
+            std::make_tuple(
+                button(267, 238, "EASY",
+                    std::vector<std::tuple<int, int, int, const char*>>({
+                        std::make_tuple(200, 25, 6, "ENEMY HEALTH x0.5"),
+                        std::make_tuple(200, 90, 6, "ENEMY SPEED x1")
+                    })
+                ),
+                null_menu
+            ),
+            std::make_tuple(
+                button(630, 238, "NORMAL",
+                    std::vector<std::tuple<int, int, int, const char*>>({
+                        std::make_tuple(200, 25, 6, "ENEMY HEALTH x1"),
+                        std::make_tuple(200, 90, 6, "ENEMY SPEED x1")
+                    })
+                ),
+                difficulty_normal
+            ),
+            std::make_tuple(
+                button(267, 384, "HARD",
+                    std::vector<std::tuple<int, int, int, const char*>>({
+                        std::make_tuple(200, 25, 6, "ENEMY HEALTH x1.5"),
+                        std::make_tuple(200, 90, 6, "ENEMY SPEED x1")
+                    })
+                ),
+                difficulty_hard
+            ),
+            std::make_tuple(
+                button(582, 384, "IMPOSSIBLE",
+                    std::vector<std::tuple<int, int, int, const char*>>({
+                        std::make_tuple(200, 25, 6, "ENEMY HEALTH x1.5"),
+                        std::make_tuple(200, 90, 6, "ENEMY SPEED x1.5")
+                    })
+                ),
+                difficulty_impossible
+            )
+        });
+
+
+
+        difficulty_normal->rect = difficulty->rect;
+        difficulty_normal->b =
+        std::vector<std::tuple<button, menu*>>({
+            std::make_tuple(
+                button(46, 534, "BACK"),
+                intro
+            ),
+            std::make_tuple(
+                button(267, 238, "EASY",
+                    std::vector<std::tuple<int, int, int, const char*>>({
+                        std::make_tuple(200, 25, 6, "ENEMY HEALTH x0.5"),
+                        std::make_tuple(200, 90, 6, "ENEMY SPEED x1")
+                    })
+                ),
+                difficulty_easy
+            ),
+            std::make_tuple(
+                button(630, 238, "NORMAL",
+                    std::vector<std::tuple<int, int, int, const char*>>({
+                        std::make_tuple(200, 25, 6, "ENEMY HEALTH x1"),
+                        std::make_tuple(200, 90, 6, "ENEMY SPEED x1")
+                    })
+                ),
+                null_menu
+            ),
+            std::make_tuple(
+                button(267, 384, "HARD",
+                    std::vector<std::tuple<int, int, int, const char*>>({
+                        std::make_tuple(200, 25, 6, "ENEMY HEALTH x1.5"),
+                        std::make_tuple(200, 90, 6, "ENEMY SPEED x1")
+                    })
+                ),
+                difficulty_hard
+            ),
+            std::make_tuple(
+                button(582, 384, "IMPOSSIBLE",
+                    std::vector<std::tuple<int, int, int, const char*>>({
+                        std::make_tuple(200, 25, 6, "ENEMY HEALTH x1.5"),
+                        std::make_tuple(200, 90, 6, "ENEMY SPEED x1.5")
+                    })
+                ),
+                difficulty_impossible
+            )
+        });
+
+
+
+        difficulty_hard->rect = difficulty->rect;
+        difficulty_hard->b =
+        std::vector<std::tuple<button, menu*>>({
+            std::make_tuple(
+                button(46, 534, "BACK"),
+                intro
+            ),
+            std::make_tuple(
+                button(267, 238, "EASY",
+                    std::vector<std::tuple<int, int, int, const char*>>({
+                        std::make_tuple(200, 25, 6, "ENEMY HEALTH x0.5"),
+                        std::make_tuple(200, 90, 6, "ENEMY SPEED x1")
+                    })
+                ),
+                difficulty_easy
+            ),
+            std::make_tuple(
+                button(630, 238, "NORMAL",
+                    std::vector<std::tuple<int, int, int, const char*>>({
+                        std::make_tuple(200, 25, 6, "ENEMY HEALTH x1"),
+                        std::make_tuple(200, 90, 6, "ENEMY SPEED x1")
+                    })
+                ),
+                difficulty_normal
+            ),
+            std::make_tuple(
+                button(267, 384, "HARD",
+                    std::vector<std::tuple<int, int, int, const char*>>({
+                        std::make_tuple(200, 25, 6, "ENEMY HEALTH x1.5"),
+                        std::make_tuple(200, 90, 6, "ENEMY SPEED x1")
+                    })
+                ),
+                null_menu
+            ),
+            std::make_tuple(
+                button(582, 384, "IMPOSSIBLE",
+                    std::vector<std::tuple<int, int, int, const char*>>({
+                        std::make_tuple(200, 25, 6, "ENEMY HEALTH x1.5"),
+                        std::make_tuple(200, 90, 6, "ENEMY SPEED x1.5")
+                    })
+                ),
+                difficulty_impossible
+            )
+        });
+
+
+
+        difficulty_impossible->rect = difficulty->rect;
+        difficulty_impossible->b =
+        std::vector<std::tuple<button, menu*>>({
+            std::make_tuple(
+                button(46, 534, "BACK"),
+                intro
+            ),
+            std::make_tuple(
+                button(267, 238, "EASY",
+                    std::vector<std::tuple<int, int, int, const char*>>({
+                        std::make_tuple(200, 25, 6, "ENEMY HEALTH x0.5"),
+                        std::make_tuple(200, 90, 6, "ENEMY SPEED x1")
+                    })
+                ),
+                difficulty_easy
+            ),
+            std::make_tuple(
+                button(630, 238, "NORMAL",
+                    std::vector<std::tuple<int, int, int, const char*>>({
+                        std::make_tuple(200, 25, 6, "ENEMY HEALTH x1"),
+                        std::make_tuple(200, 90, 6, "ENEMY SPEED x1")
+                    })
+                ),
+                difficulty_normal
+            ),
+            std::make_tuple(
+                button(267, 384, "HARD",
+                    std::vector<std::tuple<int, int, int, const char*>>({
+                        std::make_tuple(200, 25, 6, "ENEMY HEALTH x1.5"),
+                        std::make_tuple(200, 90, 6, "ENEMY SPEED x1")
+                    })
+                ),
+                difficulty_hard
+            ),
+            std::make_tuple(
+                button(582, 384, "IMPOSSIBLE",
+                    std::vector<std::tuple<int, int, int, const char*>>({
+                        std::make_tuple(200, 25, 6, "ENEMY HEALTH x1.5"),
+                        std::make_tuple(200, 90, 6, "ENEMY SPEED x1.5")
+                    })
+                ),
+                null_menu
+            )
+        });
+
+
 
         level_selection->b =
         std::vector<std::tuple<button, menu*>>({
@@ -127,6 +320,8 @@ namespace menu_system {
             std::make_tuple(204, 50, 8, "LEVEL SELECTION")
         });
 
+
+
         are_you_sure->rect =
         std::vector<std::tuple<int, int, int, int>>({
             std::make_tuple(157, 172, 806, 6),
@@ -150,6 +345,8 @@ namespace menu_system {
             std::make_tuple(185, 200, 6, "DO YOU WANT TO RETURN"),
             std::make_tuple(257, 254, 6, "TO THE MAIN MENU?")
         });
+
+
 
         game_over->b =
         std::vector<std::tuple<button, menu*>>({

@@ -6,6 +6,7 @@
 #include <vector>
 #include <tuple>
 #include "button.h"
+#include "sound.h"
 
 
 
@@ -22,7 +23,11 @@ struct menu {
     menu* next(SDL_MouseButtonEvent mouse_event) {
         if (mouse_event.button == SDL_BUTTON_LEFT)
             for (std::vector<std::tuple<button, menu*>>::iterator i = b.begin(); i != b.end(); ++i)
-                if (std::get<0>(*i).touched(mouse_event.x, mouse_event.y)) return std::get<1>(*i);
+                if (std::get<0>(*i).touched(mouse_event.x, mouse_event.y)) {
+                    menu *res = std::get<1>(*i);
+                    if (res) sound::play(sound::click_button);
+                    return res;
+                }
         return NULL;
     }
 };
