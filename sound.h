@@ -13,6 +13,10 @@ namespace sound {
     Mix_Music *battle_loop;
     Mix_Chunk *click_button;
     Mix_Chunk *sell_tower;
+    Mix_Chunk *shooting1;
+    Mix_Chunk *shooting2;
+    Mix_Chunk *place_tower;
+    Mix_Chunk *explode;
 
     Mix_Music *load_music(const char* path) {
         Mix_Music *gMusic = Mix_LoadMUS(path);
@@ -55,6 +59,10 @@ namespace sound {
         battle_loop = load_music("sounds/battle loop.mp3");
         click_button = load_sound("sounds/click button.mp3");
         sell_tower = load_sound("sounds/sell tower.mp3");
+        shooting1 = load_sound("sounds/shooting1.mp3");
+        shooting2 = load_sound("sounds/shooting2.mp3");
+        place_tower = load_sound("sounds/place tower.mp3");
+        explode = load_sound("sounds/explode.mp3");
     }
 
     void quit() {

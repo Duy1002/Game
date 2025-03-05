@@ -89,7 +89,7 @@
 	"button.h"
 	"sound.h"
 
-1741104206 c:\users\dell\desktop\game\logic.h
+1741162928 c:\users\dell\desktop\game\logic.h
 	<SDL.h>
 	"enemy.h"
 	"bullet.h"
@@ -520,7 +520,7 @@
 	"begin_code.h"
 	"close_code.h"
 
-1741103627 c:\users\dell\desktop\game\sound.h
+1741162895 c:\users\dell\desktop\game\sound.h
 	<SDL.h>
 	<SDL_mixer.h>
 

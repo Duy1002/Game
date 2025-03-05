@@ -174,6 +174,7 @@ namespace logic {
         if (in_grid(mouse_x, mouse_y)) {
             int x = mouse_x / 60, y = (mouse_y - 90) / 60;
             if (!grid[y][x] && !has_tower[y][x]) {
+                sound::play(sound::place_tower);
                 tower tmp(x * 60 + 30, y * 60 + 120, type);
                 money -= tmp.price;
                 has_tower[y][x] = 1;
@@ -312,6 +313,7 @@ namespace logic {
             } else {
                 for (std::list<bullet>::iterator j = b.begin(); j != b.end();) {
                     if (collision(*j, *i)) {
+                        sound::play(sound::explode);
                         i->damaged(j->damage);
                         i->knockback(j->knockback_distance);
                         j = b.erase(j);
@@ -338,6 +340,7 @@ namespace logic {
                             no_enemy = 0;
                             i->load();
                             if (i->ready()) {
+                                sound::play(sound::shooting1);
                                 spawn_bullet(i->x, i->y, i->damage, i->knockback_distance, i->type, x, y);
                                 i->reset();
                             }
@@ -350,6 +353,7 @@ namespace logic {
                             no_enemy = 0;
                             i->load();
                             if (i->ready()) {
+                                sound::play(sound::shooting2);
                                 spawn_bullet(i->x, i->y, i->damage, i->knockback_distance, i->type, x, y);
                                 i->reset();
                             }
@@ -370,6 +374,7 @@ namespace logic {
                             int dx = x > i->x ? x - i->x : i->x - x;
                             int dy = y > i->y ? y - i->y : i->y - y;
                             if (dx <= 5 || dy <= 5) {
+                                sound::play(sound::shooting1);
                                 spawn_bullet(i->x, i->y, i->damage, i->knockback_distance, i->type, i->x - 1, i->y);
                                 spawn_bullet(i->x, i->y, i->damage, i->knockback_distance, i->type, i->x + 1, i->y);
                                 spawn_bullet(i->x, i->y, i->damage, i->knockback_distance, i->type, i->x, i->y - 1);
