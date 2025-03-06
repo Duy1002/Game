@@ -1100,7 +1100,7 @@ namespace graphic {
                     if (i->upgraded2) {
                         draw_string(616, 558, 4, "UPGRADED");
                     } else {
-                        draw_string(628, 558, 4, "-RELOAD");
+                        draw_string(628, 558, 4, "+DAMAGE");
                         draw_int_right_corner(830, 542, 2, TOWER3_UPGRADE2_PRICE);
                     }
                     draw_string(854, 558, 4, "SELL");
