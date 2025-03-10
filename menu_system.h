@@ -67,7 +67,7 @@ namespace menu_system {
             std::make_tuple(
                 button(267, 238, "EASY",
                     std::vector<std::tuple<int, int, int, const char*>>({
-                        std::make_tuple(200, 25, 6, "ENEMY HEALTH x0.5"),
+                        std::make_tuple(200, 25, 6, "ENEMY HEALTH x0.75"),
                         std::make_tuple(200, 90, 6, "ENEMY SPEED x1")
                     })
                 ),
@@ -114,7 +114,7 @@ namespace menu_system {
             std::make_tuple(
                 button(267, 238, "EASY",
                     std::vector<std::tuple<int, int, int, const char*>>({
-                        std::make_tuple(200, 25, 6, "ENEMY HEALTH x0.5"),
+                        std::make_tuple(200, 25, 6, "ENEMY HEALTH x0.75"),
                         std::make_tuple(200, 90, 6, "ENEMY SPEED x1")
                     })
                 ),
@@ -161,7 +161,7 @@ namespace menu_system {
             std::make_tuple(
                 button(267, 238, "EASY",
                     std::vector<std::tuple<int, int, int, const char*>>({
-                        std::make_tuple(200, 25, 6, "ENEMY HEALTH x0.5"),
+                        std::make_tuple(200, 25, 6, "ENEMY HEALTH x0.75"),
                         std::make_tuple(200, 90, 6, "ENEMY SPEED x1")
                     })
                 ),
@@ -208,7 +208,7 @@ namespace menu_system {
             std::make_tuple(
                 button(267, 238, "EASY",
                     std::vector<std::tuple<int, int, int, const char*>>({
-                        std::make_tuple(200, 25, 6, "ENEMY HEALTH x0.5"),
+                        std::make_tuple(200, 25, 6, "ENEMY HEALTH x0.75"),
                         std::make_tuple(200, 90, 6, "ENEMY SPEED x1")
                     })
                 ),
@@ -255,7 +255,7 @@ namespace menu_system {
             std::make_tuple(
                 button(267, 238, "EASY",
                     std::vector<std::tuple<int, int, int, const char*>>({
-                        std::make_tuple(200, 25, 6, "ENEMY HEALTH x0.5"),
+                        std::make_tuple(200, 25, 6, "ENEMY HEALTH x0.75"),
                         std::make_tuple(200, 90, 6, "ENEMY SPEED x1")
                     })
                 ),

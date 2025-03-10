@@ -19,7 +19,7 @@
 
 
 namespace logic {
-    float health_factor[] = {0.5, 1, 1.5, 1.5};
+    float health_factor[] = {0.75, 1, 1.5, 1.5};
     float speed_factor[] = {1, 1, 1, 1.5};
     const char *difficulty_name[] = {"EASY", "NORMAL", "HARD", "IMPOSSIBLE"};
     bool grid_level[][7][16] = {

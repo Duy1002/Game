@@ -63,6 +63,13 @@ namespace sound {
         shooting2 = load_sound("sounds/shooting2.mp3");
         place_tower = load_sound("sounds/place tower.mp3");
         explode = load_sound("sounds/explode.mp3");
+        Mix_VolumeMusic(32);
+        Mix_VolumeChunk(click_button, 64);
+        Mix_VolumeChunk(sell_tower, 64);
+        Mix_VolumeChunk(shooting1, 64);
+        Mix_VolumeChunk(shooting2, 64);
+        Mix_VolumeChunk(place_tower, 128);
+        Mix_VolumeChunk(explode, 64);
     }
 
     void quit() {
