@@ -89,7 +89,7 @@
 	"button.h"
 	"sound.h"
 
-1741617128 c:\users\dell\desktop\game\logic.h
+1742565372 c:\users\dell\desktop\game\logic.h
 	<SDL.h>
 	"enemy.h"
 	"bullet.h"
@@ -103,9 +103,9 @@
 	<ctime>
 	<cstdlib>
 
-1740845895 c:\users\dell\desktop\game\enemy.h
+1742565316 c:\users\dell\desktop\game\enemy.h
 
-1741227997 c:\users\dell\desktop\game\bullet.h
+1742563184 c:\users\dell\desktop\game\bullet.h
 	<cmath>
 	"enemy.h"
 

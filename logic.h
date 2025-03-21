@@ -104,8 +104,14 @@ namespace logic {
     }
 
     bool collision(bullet b, enemy e) {
-        int x = std::get<0>(path[e.x]), y = std::get<1>(path[e.x]);
-        return (b.x - x) * (b.x - x) + (b.y - y) * (b.y - y) <= 625;
+        float Px = std::get<0>(path[e.x]), Py = std::get<1>(path[e.x]);
+        float Bx = b.x, By = b.y;
+        float Ax = Bx - b.speed_x, Ay = By - b.speed_y;
+        float vx = Px - Ax, vy = Py - Ay;
+        float lambda = (vx * b.speed_x + vy * b.speed_y) / (b.speed_x * b.speed_x + b.speed_y * b.speed_y);
+        if (lambda < 0) return (Px - Ax) * (Px - Ax) + (Py - Ay) * (Py - Ay) <= 625;
+        if (lambda > 1) return (Px - Bx) * (Px - Bx) + (Py - By) * (Py - By) <= 625;
+        return (Px - Ax - lambda * b.speed_x) * (Px - Ax - lambda * b.speed_x) + (Py - Ay - lambda * b.speed_y) * (Py - Ay - lambda * b.speed_y) <= 625;
     }
 
     bool touched_next_round_button(int mouse_x, int mouse_y) {
