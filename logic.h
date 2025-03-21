@@ -417,7 +417,11 @@ namespace logic {
             SDL_MouseButtonEvent mouse_event = ev.button;
             if (mouse_event.button == SDL_BUTTON_LEFT) {
                 int mouse_x = mouse_event.x, mouse_y = mouse_event.y;
-                if (touched_home_button(mouse_x, mouse_y)) return 2;
+                if (touched_home_button(mouse_x, mouse_y)) {
+                    holding_tower1 = holding_tower2 = holding_tower3 = 0;
+                    choosing_tower_id = -1;
+                    return 2;
+                }
                 if (!enemy_still_alive() && touched_next_round_button(mouse_x, mouse_y)) {
                     next_round();
                 } else if (touched_tower1_button(mouse_x, mouse_y)) {
