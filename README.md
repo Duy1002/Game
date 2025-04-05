@@ -19,3 +19,16 @@
     - Âm thanh: https://audiojungle.net/, https://pixabay.com/
     - Dùng AI để tra cứu các hàm SDL cơ bản
 
+    Checklisk:
+    - Dùng các lệnh vẽ hình
+    - Background
+    - Event chuột
+    - Xử lý va chạm
+    - Score (có tính điểm)
+    - Lưu bảng điểm
+    - Sound
+    - Background music
+    - Menu
+    - Pause/Resume
+    - Status bar / lives (mạng/máu...)
+
