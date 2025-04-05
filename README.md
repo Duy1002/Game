@@ -19,6 +19,8 @@
     - Âm thanh: https://audiojungle.net/, https://pixabay.com/
     - Dùng AI để tra cứu các hàm SDL cơ bản
 
+    Ngưỡng điểm: 9-10
+
     Checklisk:
     - Dùng các lệnh vẽ hình
     - Background
